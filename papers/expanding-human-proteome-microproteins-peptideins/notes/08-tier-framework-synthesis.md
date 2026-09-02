@@ -88,13 +88,21 @@ Tier is not annotation. Tier describes evidence; annotation is a decision about 
 
 **Candidate protein** requires all three of:
 
-- detection meeting HUPO-HPP criteria — ≥2 non-HLA peptides of ≥9 aa, spanning ≥18 aa of the ORF
+- detection meeting HUPO-HPP criteria — ≥2 **non-nested** non-HLA peptides of ≥9 aa, together spanning ≥18 aa of the ORF
 - presence in healthy cells
 - evidence of function
 
 **Candidate peptidein** requires none of those. Detection need not meet HUPO-HPP criteria, may come from normal *or* cancer cells, and function may be unknown or absent.
 
+"Non-nested" is load-bearing and easy to skim past: the paper defines it as "neither contained completely within the other", so two peptides where one sits inside the other are **one** piece of evidence, not two.
+
 The peptidein class exists precisely because the first list is unreachable for most of this catalogue, for reasons that are not about biology. Agenda question 1 makes the arithmetic explicit: 28.3% of these ncORFs — 2,059 of 7,264 — are shorter than 25 amino acids, so two non-nested 9-mers covering 18 residues is close to geometrically impossible. A standard written for large proteins does not merely disadvantage microproteins; for a large fraction of them it cannot be satisfied at any depth of sequencing.
+
+The paper supplies the control experiment for that claim, and it is decisive: taking a manually curated set of small GENCODE proteins — molecules already accepted as real — **only 2 of 36 known proteins under 50 amino acids (5.6%) satisfy the benchmarks for HUPO-HPP verification.** So the standard fails 94% of small proteins we already believe in. Any inference from "does not meet HUPO-HPP criteria" to "probably is not a protein" is therefore unsound for short sequences, and that single number is the strongest thing you can say in defence of the peptidein class.
+
+There is also a structural ceiling above all this, easy to miss. PeptideAtlas awards the status `canonical` only to entries in the core proteome. An ncORF that clears the two-peptide bar with peptides that cannot be mapped to the core proteome is instead termed **`non-core canonical`** — a distinct, lesser category. So no ncORF can become `canonical` in PeptideAtlas regardless of how good its evidence gets. That is a *definitional* barrier rather than an evidentiary one, and it is worth separating from the biology when you discuss what would have to change.
+
+One clean illustration of why annotation versions are not interchangeable, since it comes up the moment anyone compares Fig. 1b with Fig. 4: the ORBL analysis re-derived biotypes on GENCODE v42 while the catalogue was built on v35. The v42 per-biotype counts sum to 6,816, and the differences against Fig. 1b sum to exactly −448 — which looks like a clean subtraction of the mixed-biotype ORFs, except that the intORF, doORF and lncRNA ORF counts all *increase*, and no pure exclusion can do that. So the shortfall is transcript remodelling between versions and the pure-biotype criterion superimposed, in proportions the paper never states. Never put a Fig. 1b count and a Fig. 4 fraction in the same sentence.
 
 Note also which ORFs were even *eligible* for review: per Fig. 5e, only Tier 1A and Tier 2A ncORFs, plus Tier 1B ncORFs detected by ≥5 HLA peptides, were considered for manual validation. The 77 ncORFs entering by that HLA route are there because of an explicit consortium judgement that abundant HLA evidence deserves a look.
 
@@ -106,15 +114,21 @@ This is the paper's most quotable sequence and its most misread. Follow it.
 
 **37** ncORFs are provisionally Tier 1A → after manual inspection of the MS evidence, **20** are confirmed → further scrutiny reduces this to **15** prioritized for potential annotation → GENCODE has so far annotated **3** as protein-coding genes.
 
-The documented reasons for exclusion are worth memorizing, because each one is a distinct failure mode:
+The losses happen in three distinct stages, and conflating them is the usual mistake. Stage one takes 37 to 20: seventeen ncORFs had insufficient MS evidence on inspection and were redistributed downward — 2 to Tier 1B, 7 to Tier 2A, 1 to Tier 2B, 7 to Tier 4. Then:
 
-- **a miscalled CDS caused by a GRCh38 assembly error** (n=1) — the reference genome itself was wrong
-- **a novel CDS isoform** (n=1) — real, but not a new gene
+**20 → 15**, four reasons totalling five ORFs:
+
 - **likely pseudogenic insertion** (n=2)
+- **downgraded to Tier 3** on insufficient Ribo-seq evidence (n=1)
+- **a novel CDS isoform** (n=1) — real, but not a new gene
+- **a miscalled CDS caused by a GRCh38 assembly error** (n=1) — the reference genome itself was wrong
+
+**15 → 3**, two reasons totalling twelve ORFs:
+
 - **unclear evolutionary constraint beyond primates** (n=2)
 - **high-quality peptide evidence only from cancer or cell-line samples** (n=10)
 
-That last number dominates. Two-thirds of the losses at the final stage were not about whether the protein exists — they were about *where it was seen*. Which is agenda question 3, and which follows directly from the sampling fact you met in [Module 5](05-immunopeptidomics.md): 2.36 of 3.53 billion non-HLA MS2 spectra, 66.9%, come from cancer tissue or cancer cell lines. The world's proteomics data is mostly cancer data, so a healthy-tissue requirement gates annotation on a minority of available evidence.
+Both stages reconcile exactly: 2 + 1 + 1 + 1 = 5, and 2 + 10 = 12. That last number dominates. Two-thirds of the losses at the final stage were not about whether the protein exists — they were about *where it was seen*. Which is agenda question 3, and which follows directly from the sampling fact you met in [Module 5](05-immunopeptidomics.md): 2.36 of 3.53 billion non-HLA MS2 spectra, 66.9%, come from cancer tissue or cancer cell lines. The world's proteomics data is mostly cancer data, so a healthy-tissue requirement gates annotation on a minority of available evidence.
 
 The three that made it: `c12norep105` in CYP27B1, `c21norep46` in ERVH48-1, and `c11riboseqorf4` in PIDD1. A fourth, `c2riboseqorf47` (the GMCL1 uORF), was promoted via the route described in [Module 7](07-function-crispr-olmalinc.md) — on ORBL constraint, CRISPR evidence and HLA support, with no tryptic peptides at all.
 
@@ -131,12 +145,14 @@ Here is the synthesis the paper never states in one place. You should be able to
 | HLA immunopeptidomics | 1,785 | 24.6% |
 | Tryptic (non-HLA) MS — detected | 183 | 2.5% |
 | Tryptic MS — *surviving manual inspection* | 66 | 0.9% |
-| Seen by both windows | 101 | 1.4% |
+| Seen by both windows *(derived)* | 101 | 1.4% |
 | **Union — the abstract's "about 25%"** | **1,867** | **25.7%** |
 | Final Tier 1A | 16 | 0.22% |
 | Peptidein annotations | 121 | 1.7% |
 | **New protein-coding genes** | **3** | **0.04%** |
 | *Canonical proteins, for contrast* | *15,581 of 20,326* | *76.7%* |
+
+The overlap of 101 is not printed anywhere in the paper — it is 183 + 1,785 − 1,867, using Fig. 3a's union. Present it as a derivation, not a citation.
 
 Two rows there deserve a second look. Tryptic MS detected 183 ncORFs, but only **66** survived manual inspection — the split is 30 of 42 ncORFs with multiple peptides versus just **36 of 141** with a single peptide (Fig. 2c–d). A 26% survival rate for single-peptide evidence is the paper's own empirical case for why HUPO-HPP demands two peptides.
 
@@ -174,7 +190,7 @@ Question 5 is the one to sit with. It is the hinge on which the whole peptidein 
 
 Four, in their own accounting:
 
-1. **Sample type remains problematic.** ncORFs in STK11, ZNF219 and CIRBP have multiple tryptic peptides and remain peptideins, because all supporting peptides come from cancer samples or immortalized cell lines.
+1. **Sample type remains problematic.** The Discussion names three genes whose ncORFs have multiple tryptic peptides and *still* remain peptideins, because every supporting peptide comes from cancer samples or immortalized cell lines. Find them in that paragraph yourself — they are one of the capstone cases in [journal club](journal-club.md), so they are deliberately not named here.
 2. **The work is data-dependent acquisition only.** Data-independent acquisition, especially coupled with targeted PRM validation, may be more sensitive in specific contexts.
 3. **It relies on large-scale manual inspection**, which is not feasible for most researchers. The authors point toward retention-time and ion-mobility prediction tools for scalable work.
 4. **ORBL has its own limitations**, reported in the Supplementary Results.

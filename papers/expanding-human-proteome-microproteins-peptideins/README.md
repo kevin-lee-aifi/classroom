@@ -26,7 +26,7 @@ Quoted under the article's CC BY-NC-ND 4.0 licence; © The Author(s) 2026. Wordi
 - **Peptidein** — a microprotein confidently detected endogenously but whose role in normal physiology cannot presently be verified
 - Protein *identification* versus protein-coding gene *annotation* — the paper's central distinction
 - The six-tier evidence framework, and provisional versus final tier assignment
-- HUPO-HPP verification criteria (≥2 non-HLA peptides of ≥9 aa, spanning ≥18 aa)
+- HUPO-HPP verification criteria (≥2 non-nested non-HLA peptides of ≥9 aa, together spanning ≥18 aa)
 - Bottom-up mass spectrometry, PSMs, and target–decoy FDR at scale
 - HLA class-I immunopeptidomics as a readout of proteasome output
 - `ORBL` — conservation (`ORBLv`) and constraint (`ORBLq`) of *ORFness*, as distinct from amino-acid conservation

@@ -65,7 +65,19 @@ It demotes. Provisional to final: 1A 37 → 16, 1B 665 → 601, 2A 146 → 39, 2
 
 What it tells you: automated integration of three noisy evidence types is systematically optimistic, and the correction is large rather than marginal. Two further observations worth raising, and these are your inference rather than the paper's: final Tier 1A is a subset of provisional Tier 1A, so curation never promotes anything *into* "candidate protein" — the ceiling is set by automated tryptic MS, which is the very method the paper argues is failing. And provisional Tier 4 is perfectly stable at 5,353, meaning roughly three-quarters of the catalogue was never really adjudicated at all.
 
-**Q7. Reconcile a very low reported FDR with the rejection of most single-peptide ncORFs.**
+**Q7. Walk the Tier 1A funnel from 37 to 3, and account for every ORF that drops out.**
+
+Three stages, and conflating them is the usual mistake.
+
+37 ncORFs are provisionally Tier 1A. Stage one: seventeen had insufficient MS evidence on manual inspection and were redistributed downward — 2 to Tier 1B, 7 to Tier 2A, 1 to Tier 2B, 7 to Tier 4 — leaving 20 MS-confirmed. Stage two removes five: 2 likely pseudogenic insertions, 1 downgraded to Tier 3 for insufficient Ribo-seq, 1 novel CDS isoform, and 1 miscalled CDS caused by a GRCh38 assembly error — leaving 15 prioritized for annotation. Stage three removes twelve: 2 for unclear evolutionary constraint beyond primates, and **10 because high-quality peptide evidence came only from cancer or cell-line samples**. That leaves 3.
+
+Both later stages reconcile exactly, which is worth checking out loud: 2 + 1 + 1 + 1 = 5, and 2 + 10 = 12.
+
+Two things to say about the shape. First, the dominant rejection reason at the final stage is not about whether the protein exists — it is about *where it was seen*, which is agenda question 3 and follows directly from 66.9% of searched spectra being cancer-derived. Second, note that final Tier 1A is 16, not 15: one likely pseudogenic sequence was retained, which is exactly what the asterisk in Fig. 5b's caption flags. Even the final top tier carries a known bad entry, labelled as such.
+
+Follow-up to be ready for: the three annotated genes are `c12norep105` in CYP27B1, `c21norep46` in ERVH48-1 and `c11riboseqorf4` in PIDD1 — and `c2riboseqorf47` was promoted separately, outside this funnel. Distinct again from three Tier 1B ncORFs GENCODE had already annotated before this work on evolutionary grounds. "Three genes" is ambiguous in this paper; say which three.
+
+**Q8. Reconcile a very low reported FDR with the rejection of most single-peptide ncORFs.**
 
 They are answers to different questions. The reported FDR is a global property of a build containing millions of peptides, dominated by canonical proteins with high prior probability. ncORFs are a small, low-prior stratum inside it: short, low-abundance, and concentrated in the score region where errors live. A global error rate carries no guarantee about a rare subset, so the local FDR among ncORF identifications is far worse than the headline figure.
 
@@ -73,15 +85,19 @@ The paper demonstrates this empirically rather than just asserting it. Of ncORFs
 
 The analogy to resist: this is not a Benjamini–Hochberg q-value over a fixed gene list. There is no exchangeability argument, the null is a model over sequence space, and you cannot pre-filter low-information candidates the way you drop low-count genes before differential expression.
 
-**Q8. State the HUPO-HPP rule exactly and explain why it is structurally hostile to microproteins.**
+**Q9. State the HUPO-HPP rule exactly and explain why it is structurally hostile to microproteins.**
 
 Two uniquely mapping, non-nested peptides of at least 9 amino acids, together covering at least 18 amino acids. Non-nested matters — two peptides where one contains the other are one piece of evidence.
 
 Why each clause exists: two peptides because a single PSM is the modal failure mode of large-scale search; 9 amino acids because shorter peptides are not combinatorially unique in a 20,000-protein proteome; 18 amino acids of coverage to guard against one mis-assigned region carrying the whole claim. Every clause is defensible.
 
-Why it cannot be met: 2,059 of 7,264 ncORFs (28.3%) are shorter than 25 amino acids. Two non-overlapping 9-mers covering 18 residues of a 22-amino-acid protein requires near-complete coverage *and* trypsin cutting in exactly the right places. The control case is that only 2 of 36 curated GENCODE proteins under 50 amino acids satisfy the rule. This is not a threshold that disadvantages microproteins — for a large fraction it is unsatisfiable at any sequencing depth. Hence open question 1.
+Why it cannot be met: 2,059 of 7,264 ncORFs (28.3%) are shorter than 25 amino acids. Two non-nested 9-mers covering 18 residues of a 22-amino-acid protein requires near-complete coverage *and* trypsin cutting in exactly the right places.
 
-**Q9. Why is a no-protease search harder than a tryptic one?**
+The control experiment is the part to lead with, because it settles the argument: of a manually curated set of small GENCODE proteins — molecules the field already accepts — **only 2 of 36 under 50 amino acids (5.6%) satisfy HUPO-HPP verification benchmarks.** The standard fails 94% of small proteins we already believe in, so failing it carries almost no evidential weight against a short ORF. Hence open question 1.
+
+Have the structural ceiling ready as a follow-up too: PeptideAtlas reserves `canonical` for core-proteome entries, so an ncORF meeting the two-peptide bar with peptides outside the core proteome is classed `non-core canonical` instead. No ncORF can reach `canonical`, however good its evidence — a definitional barrier, not an evidentiary one.
+
+**Q10. Why is a no-protease search harder than a tryptic one?**
 
 Two reasons, one statistical and one physical. Statistically, a tryptic search enumerates peptides bounded by lysine and arginine; a no-enzyme search admits every substring within the mass window, so the candidate count per spectrum grows by orders of magnitude and, at a fixed score threshold, so does the chance of a high-scoring wrong answer. Physically, tryptic peptides carry a C-terminal basic residue, which localizes the mobile proton and produces the clean y-ion ladders that validation criteria assume. HLA peptides often lack a basic terminus, so their spectra are richer in b ions and internal fragments — which is why the paper's validation procedure has HLA-specific clauses about annotating internal fragmentation.
 
@@ -89,7 +105,7 @@ The right analogy from your own work is *de novo* transcript assembly versus qua
 
 One thing to flag: Fig. 1b labels the non-HLA build "protease-specific", but Methods say all datasets were searched with semi-enzymatic, typically semi-tryptic settings. Semi-tryptic already enlarges the space relative to fully tryptic, so the figure overstates the constraint.
 
-**Q10. Explain ORBLv and ORBLq to someone who knows PhyloCSF.**
+**Q11. Explain ORBLv and ORBLq to someone who knows PhyloCSF.**
 
 PhyloCSF asks whether cross-species substitutions look filtered by the genetic code — a per-codon likelihood comparison between coding and non-coding substitution models. It measures constraint on **amino-acid identity**, and it is badly underpowered on short ORFs because there are too few codons for the likelihood to accumulate.
 
@@ -99,7 +115,7 @@ ORBLq is ORBLv converted into a quantile against ≥1,000 untranslated ORFs matc
 
 The punchline: 2,211 of 7,264 (30.4%) exceed ORBLq 0.9 against 10% expected, while only 143 (2.0%) reach PhyloCSF above 10. Constraint on having a reading frame is roughly fifteen times more common than constraint on what it encodes. The existence proof that they are orthogonal is `c8riboseqorf102` — ORBLq 0.98, PhyloCSF per codon −30, and detected by immunopeptidomics.
 
-**Q11. What can a CRISPR fitness screen establish about a 20–120 aa peptide, and what can it not?**
+**Q12. What can a CRISPR fitness screen establish about a 20–120 aa peptide, and what can it not?**
 
 It can establish that cutting DNA inside the ORF reproducibly reduces proliferation across cell lines, and — with a tiling design and an in-gene permutation null — that the effect is spatially localized to the ORF rather than smeared across the host transcript.
 
@@ -109,23 +125,23 @@ Design limits specific to this screen: all intORFs were excluded, as were doORFs
 
 ### The adversarial questions
 
-**Q12. Give the strongest alternative explanation for the ORBL result.**
+**Q13. Give the strongest alternative explanation for the ORBL result.**
 
 That much of the constraint is on the RNA, not the peptide. uORFs are the largest and most constrained class — 1,335 of 2,915 above ORBLq 0.9. They sit in 5′UTRs under selection for translational control, Kozak context and RNA structure, all of which preserve a start codon, a stop codon and an open frame without requiring that the encoded peptide matter at all. The paper concedes this reading explicitly when it suggests the excess for uORFs and uoORFs indicates conserved *regulatory* upstream ORFs — but the abstract's "evolutionary constraint is common" invites the protein interpretation.
 
 Two supporting points. First, the overlapping biotypes inherit constraint from the CDS they sit inside, which the authors state; ORBLq's biotype- and frame-matching mitigates this but does not obviously eliminate it. Second, ORBLv's rules are permissive by design — a *different* stop codon counts as a conserved stop, and compensating insertions and deletions count as a conserved frame. Both are correct for "ORFness" and both weaken any inference about a conserved product. The classes where ORFness constraint is hardest to explain away are dORFs and lncRNA ORFs, which have the lowest fractions.
 
-**Q13. Is the NetMHCpan concordance independent validation?**
+**Q14. Is the NetMHCpan concordance independent validation?**
 
 No — it is an internal consistency check, and a useful one, but NetMHCpan is trained in substantial part on eluted-ligand immunopeptidomics data, the same modality being checked. High concordance rules out gross artefact; it does not independently establish that these peptides are presented ligands. Marking this as `unverified`: I believe the specific training-data overlap is well established for NetMHCpan 4.x, but I have not confirmed it against the NetMHCpan publication itself, so present it as a concern to check rather than a settled fact.
 
-**Q14. Which single panel in Fig. 6 would you delete last?**
+**Q15. Which single panel in Fig. 6 would you delete last?**
 
 The rescue. Pan-essentiality, the DepMap co-essentiality correlation, the Cas13 concordance and the tiling screen are all consistent with OLMALINC mattering as an RNA. Only re-expressing the `c10riboseqorf92` coding sequence and recovering proliferation after transcript knockdown speaks to the ORF product specifically.
 
 And then the honest caveat: even that is one cell line, four replicates, a proliferation readout, and re-expression of a coding sequence — which restores the peptide *and* an exogenous RNA containing it, so an RNA-level rescue is not formally excluded. The transcriptional follow-up is weaker still: 513 genes up and 456 down, but only 14 with a significant interaction term, and R² = 0.722 between the GFP and ORF-expressing responses, meaning restoring the ORF explains little of the knockdown response.
 
-**Q15. Where does your own expertise let you audit this paper better than a proteomicist could — and where should you not trust yourself?**
+**Q16. Where does your own expertise let you audit this paper better than a proteomicist could — and where should you not trust yourself?**
 
 Better: the multiplexed scRNA-seq in Fig. 6i–j and Extended Data Fig. 9. It is 10x Chromium GEM-X on-chip multiplexing with 3′ GEX v4, Cell Ranger 9.0.1 `multi` against `refdata-gex-GRCh38-2024-A`, MAD-based filtering with a hard 20% mitochondrial cutoff, SoupX ambient correction, Seurat `AggregateExpression` pseudobulk, edgeR `filterByExpr` and TMM, limma-voom with cell-line identity as a covariate, and hdWGCNA modules — with cell lines deconvolved by SNP-based demultiplexing. You can judge whether roughly 200 cells per condition supports pseudobulk differential expression, and you can spot that dropping lines with too few cells risks selecting against exactly the lines where the perturbation worked, since a dying line loses cells.
 
@@ -133,7 +149,7 @@ Second audit surface, also yours: annotation versioning. The paper moves across 
 
 Where not to trust yourself: everything that makes the paper strong. Billions of spectra, a 1.7-million-ORF matched null, thousands of hand-curated spectra, and a phylogenetic method you met a week ago. Fig. 6i–j is the paper's thinnest evidence and its most legible figure to you; the temptation is to grade the whole paper by the one panel you can read. Resist it. Calibration is the skill being tested here, not skepticism.
 
-**Q16. Name three internal inconsistencies in the paper.**
+**Q17. Name three internal inconsistencies in the paper.**
 
 The number of HLA-typed MS runs appears as 4,870 in the main text, 4,879 in Methods and 4,869 in a figure caption. The count of Ribo-seq profiles manually inspected in the HLA build is 691 in the main text and Fig. 2h but 699 in Methods. And the abstract's "95,520 proteomics experiments" contradicts the Methods' own definition of an experiment, which totals 1,764.
 
