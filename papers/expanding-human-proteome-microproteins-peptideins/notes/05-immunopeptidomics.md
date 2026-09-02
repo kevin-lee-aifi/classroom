@@ -13,7 +13,7 @@ Four answers in writing before you read on. Numbers, not ranges.
 3. HLA peptides are not protease products, so the search runs with no enzyme specificity. Against the semi-tryptic search used for the other build, by roughly what factor does that enlarge the candidate space for an 8–12-residue peptide?
 4. Of the ncORFs immunopeptidomics did detect, what fraction rest on exactly one distinct peptide?
 
-Question 2 is where most people are most wrong, and it is the hinge of the module.
+Question 2 has a twist. Write a number down anyway — the interesting part turns out to be what the paper does and does not let you check.
 
 ## What the assay physically samples
 
@@ -37,13 +37,15 @@ Two consequences dominate everything downstream. Ligand length is set by the mac
 
 Write both crudely. Identifying a protein in a digest scales with steady-state abundance — synthesis rate divided by degradation rate. Ligand supply from that protein scales with the rate its molecules are *destroyed* — synthesis rate times degradation rate, near enough. The two expressions move in opposite directions in the degradation rate. A polypeptide made constantly and destroyed immediately has a near-zero standing pool and a large ligand flux.
 
-So these are not one window at two sensitivities. They are windows onto different physical quantities, and a whole class of molecules is bright in one and invisible in the other. That is why running both was worth doing, why the assay is *enriched* for unstable products, and — as you are about to see — why the overlap between them is tiny.
+So these are not one window at two sensitivities. They are windows onto different physical quantities, and a whole class of molecules is bright in one and invisible in the other. That is why running both was worth doing, and why the assay is *enriched* for unstable products.
+
+It also makes a **prediction**: the two windows should overlap much less than their separate yields would suggest. Keep that labelled as a prediction. As you will see below, this paper does not report the overlap, so nothing in it confirms the argument — which makes the argument more useful, not less, because it tells you what measurement is missing.
 
 ### DRiPs, and the BAG6 explanation the Discussion offers
 
 Immunology has a name for the short-lived source material: **DRiPs**, defective ribosomal products — prematurely terminated chains, misfolded nascent chains, products of frameshifting or mis-acylated tRNA, degraded rapidly rather than joining the mature pool. A substantial fraction of the class-I immunopeptidome is thought to derive from them. The paper cites this as reference 40 (Yewdell & Hollý, *Curr. Opin. Immunol.* **64**, 130–136, 2020).
 
-The Discussion makes the link explicit: many ncORFs generate immunopeptides but not tryptic peptides, and one potential explanation is lower stability for many ncORF-derived polypeptides, perhaps through **BAG6-mediated degradation in the proteasome** — citing reference 19 (Cuevas *et al.*, *Cell Rep.* **34**, 108815, 2021, titled "Most non-canonical proteins uniquely populate the proteome or immunopeptidome") and reference 21 (Kesner *et al.*, "Noncoding translation mitigation", *Nature* **617**, 395–402, 2023). The definition of `peptidein` carries it forward: peptideins explicitly include potentially transient products of cellular stress or defective ribosome translation.
+The Discussion makes the link explicit: many ncORFs generate immunopeptides but not tryptic peptides, and one potential explanation is lower stability for many ncORF-derived polypeptides, perhaps through **BAG6-mediated degradation in the proteasome** — citing reference 19 (Cuevas *et al.*, *Cell Rep.* **34**, 108815, 2021 — prior work titled "Most non-canonical proteins uniquely populate the proteome or immunopeptidome", and the source of the claim that these two windows are largely disjoint) and reference 21 (Kesner *et al.*, "Noncoding translation mitigation", *Nature* **617**, 395–402, 2023). The definition of `peptidein` carries it forward: peptideins explicitly include potentially transient products of cellular stress or defective ribosome translation.
 
 Be precise about status. This is offered as *one potential explanation*, cited to prior work. The paper makes no stability measurement of its own — no half-life, no chase, no proteasome-inhibition immunopeptidomics. Whether structure prediction could substitute is left explicitly open, and Extended Data Fig. 10 shows why that is hard: predicted pLDDT rises as ncORF length falls, and shuffled versions of high-confidence sequences also reach high pLDDT. There is no validated stability readout here to lean on.
 
@@ -119,23 +121,22 @@ Note what that established. It checked that the *Ribo-seq* evidence for the sour
 
 ## The central argument: where the headline 25% comes from
 
-The spine of the curriculum. Put the two windows side by side.
+The spine of the curriculum. Put the numbers the paper actually prints side by side, and read the fourth column as carefully as the second.
 
-| Window | ncORFs detected | Share of 7,264 |
-|---------|-------|-------|
-| HLA immunopeptidomics (2023-11 build) | 1,785 | 24.6% |
-| Tryptic/semi-tryptic MS (2023-06 build) | 183 | 2.5% |
-| **Seen by both windows** | **101** | **1.4%** |
-| **Union — the abstract's "about 25%"** | **1,867** | **25.7%** |
-| Canonical proteins, same comparison (Fig. 3a) | 15,581 of 20,326 | 76.7% |
+| Row | ncORFs | Share of denominator | Where it comes from |
+|---------|-------|-------|-------|
+| HLA build, exclusive peptide assignment | 1,785 of 7,264 | 24.6% | running text; Fig. 2e,f |
+| Tryptic/semi-tryptic build | 183 of 7,264 | 2.5% | running text; Fig. 2a,b |
+| HLA build, permissive peptide assignment | 1,867 of 7,264 | 25.7% | Fig. 3a panel label |
+| Canonical proteins, same panel and rule | 15,581 of 20,326 | 76.7% | Fig. 3a panel label |
 
-Decompose the union: HLA only 1,785 − 101 = **1,684**; both **101**; tryptic only 183 − 101 = **82**; total 1,684 + 101 + 82 = **1,867**.
+**Row three is not a union of rows one and two.** Both 1,785 and 1,867 are counts from the *same* HLA build. They differ only in how a peptide that matches several ncORFs is handled. Most analyses assign such a peptide to exactly one ncORF — the first alphanumerically. The `Detectability determinants` analysis behind Fig. 3 does not, and the Methods say so outright: contrary to most other analyses, peptides were not exclusively assigned to a single ncORF, which is why the detected count there exceeds the count in Extended Data Fig. 4b. Fig. 3's own title fixes the scope — "Determinants of ncORF peptide detection **in the HLA build**".
 
-Three readings, in increasing order of consequence.
+So the two numbers being close is unremarkable: they count the same detections under two tie-breaking rules. Do not read 1,867 as "1,785 plus the tryptic ones". It is a trap that closes an equation you will be tempted to write, and the next subsection is about why you should not write it.
 
-**95.6% of all detected ncORFs — 1,785 of 1,867 — came from immunopeptidomics.** Delete that assay and the abstract reads "about 2.5%".
+Two readings survive, and they are the two that matter.
 
-**Only 5.4% — 101 of 1,867 — were seen by both.** The windows are very nearly disjoint. Not a novel observation; it is the finding in the title of reference 19. But it is now established at consortium scale, and it is what the flux-versus-standing-pool argument predicts.
+**The abstract's "about 25%" is the immunopeptidomics number.** 1,785 of 7,264 is 24.6%; tryptic proteomics reached 2.5%. There is no arithmetic by which 2.5% supports a claim of "about 25%". Delete the HLA build and the abstract reads "about 2.5%".
 
 **The window carrying the claim is not the window the standard was written for.** The HUPO-HPP criteria — two distinct **non-HLA** peptides of ≥9 aa covering ≥18 aa — were written for tryptic proteomics, and are stated in terms that exclude HLA peptides by construction. Tryptic proteomics reached 2.5%. The headline is produced almost entirely by evidence the governing standard does not count.
 
@@ -143,18 +144,39 @@ Three readings, in increasing order of consequence.
 
 The paper does this same accounting itself, in public, and builds its framework around it.
 
-- **Fig. 5 keeps MS and HLA in separate columns.** A merged "proteomics" column would have concealed a 95.6%/5.4% split. Separating them is what makes the split visible.
+- **Fig. 5 keeps MS and HLA in separate columns.** A merged "proteomics" column would have implied the two are interchangeable evidence differing only in sensitivity. Separating them keeps visible the fact that Tier 1B and Tier 2B ncORFs have *no* tryptic support at all — which is precisely the population a merged score would have hidden.
 - **Tier 1B exists at all.** "Presented" is a tier with MS `−` and HLA `++`, created because the consortium decided abundant HLA evidence says something real while declining to say it says "protein".
 - **`c2riboseqorf47` was promoted with no tryptic peptides.** The GMCL1 uORF became `ENSG00000310604`; the Discussion says the identification was made *despite there being no tryptic MS peptides* and despite ambiguous amino-acid constraint by conventional methods. HLA-I and HLA-II peptides, a loss-of-function phenotype, a high ORBLq and a positive PhyloCSF score carried it.
 - **Agenda question 2 asks directly**: should HLA immunopeptidomics be used as evidence that an ncORF encodes a protein-coding gene? They note 1,785 of 7,264 are observed with HLA data, including 24 ncORFs with one tryptic peptide that HLA support could push over the line, and cite `c2riboseqorf47`. Posed as a question, not a conclusion.
 
-A project with something to hide would have merged the columns and quoted the union. This one separated them and named the question it could not answer.
+A project with something to hide would have collapsed the two columns into a single proteomics score. This one separated them, kept the HLA-only tiers visibly distinct, and named the question it could not answer.
 
-### Verify the overlap before quoting it
+### What the paper does not report
 
-You will be asked for the 101 in journal club, so know its provenance. Neither `101` nor the union `1,867` appears in the running text; both are recoverable only from the per-ncORF detections in Supplementary Tables 3 (non-HLA) and 6/7 (HLA), and they are arithmetically locked — given one, the other follows.
+This is the answer to prediction 2, and it is not a number.
 
-There is also a trap. Fig. 3a labels its detected ncORF set `Detected (n = 1,867)` against `Undetected (n = 5,397)`, summing to 7,264, which looks like confirmation of the union. It may not be. The `Detectability determinants` Methods state that for this analysis, contrary to most others, peptides were **not** exclusively assigned to a single ncORF, so the detected count exceeds that in Extended Data Fig. 4b — attributing the excess over 1,785 to ambiguous peptide-to-ncORF mapping rather than to adding the tryptic build. The mapping rule in that situation is itself arbitrary: for a peptide matching several ncORFs, one is chosen as the first alphanumerically. So two different quantities may both print as 1,867. Cite Supplementary Tables 3 and 6/7 rather than Fig. 3a for the overlap, and say "about 100 of roughly 1,870" if you are being careful in front of a proteomicist.
+**The paper never reports the union of its two windows, and never reports their overlap.** No figure panel, no table, no sentence gives the count of ncORFs detected by both builds, or by either. Recovering either would mean intersecting the per-ncORF detection lists in Supplementary Tables 3 (non-HLA) and 6/7 (HLA) — which are not in the PDF.
+
+That absence is easy to paper over, so name the temptation explicitly. You know 1,785 and 183, so you can write *union = 1,785 + 183 − overlap* and feel that some printed number must close the equation. Fig. 3a's `Detected (n = 1,867)` looks like exactly that number. It is not: as set out above, it is the same HLA build under a looser assignment rule, and the Methods say so. Two different quantities can print the same digits. If you ever quote an overlap or a union for this paper, say where you got it — and if the answer is "I subtracted", do not quote it.
+
+**One overlap-adjacent number the paper does give**, and it is the one to use. Agenda question 2 states that of the 1,785 ncORFs observed with HLA data, **24 have one peptide in tryptic MS data** — one short of the HUPO-HPP two-peptide threshold. That is a lower bound on the intersection, and more usefully it is the slice of the intersection that carries policy weight: 24 ncORFs sitting exactly on the line agenda question 2 is about, where HLA support would decide annotability.
+
+**On disjointness, cite the prior work, not this paper.** Reference 19 (Cuevas *et al.*, *Cell Rep.* **34**, 108815, 2021) is titled "Most non-canonical proteins uniquely populate the proteome or immunopeptidome" — that is where "the two windows are largely disjoint" comes from. This paper cites it, and its Discussion echoes the pattern qualitatively by noting that many ncORFs appear to generate immunopeptides but not tryptic peptides. But it does not quantify the disjointness for its own 7,264. So treat "largely disjoint" as an inherited claim from reference 19, plus a prediction of the flux argument above — not as a result established here at consortium scale.
+
+### The comparison that does carry weight
+
+Since there is no cross-build union to lean on, the strongest quantitative statement available is a comparison made *inside a single panel* — and it is cleaner than a union would have been.
+
+Fig. 3a splits both ncORFs and canonical proteins into detected and undetected, in the same build, over the same spectra, under the same permissive assignment rule:
+
+| Set | Detected | Undetected | Total | Detected share |
+|---------|-------|-------|-------|-------|
+| Non-canonical ORFs | 1,867 | 5,397 | 7,264 | 25.7% |
+| Canonical proteins | 15,581 | 4,745 | 20,326 | 76.7% |
+
+Both rows sum exactly to their denominators, so the panel reconciles. And because it is one assay, one search and one assignment rule on both sides, there is nothing to control for: **the same no-enzyme search over the same 240 million spectra reaches roughly three-quarters of the canonical proteome and roughly a quarter of the ncORFs.**
+
+That is a three-fold deficit which cannot be explained away as a difference between methods, because there is no difference between methods here. Whatever produces it — length, abundance, instability, binding-motif accessibility, or ORF boundaries being annotated wrongly — is a property of the ncORFs as seen by immunopeptidomics. This is the cleanest number in the module, it needs no supplementary table, and it is the one to lead with.
 
 ## Determinants of detection
 
@@ -180,7 +202,7 @@ That flip is the most misreadable result in Fig. 3. Skim it as "basic sequences 
 
 A hypothesis, offered as one: pI proxies basic-residue content, and basic residues do opposite things in the two assays. In a tryptic digest, K and R *are* the cleavage sites, so a K/R-rich protein is chopped into fragments skewing below the identifiable length window — under-detection of high-pI proteins. In class-I presentation, several common alleles favour basic anchor residues, so basic sequences yield more bindable substrings. That allele-preference claim is `unverified` here; the panel bearing on it is Extended Data Fig. 6a,b, which compares NetMHCpan rank between detected and undetected 9-mers across the 154 alleles associated with ncORF peptides. Read those before believing the story.
 
-One thing to check rather than assume: the Methods never say *which build* defines "detected" for canonical proteins in Fig. 3a. Fig. 3's title places the figure in the HLA build, and the Methods say canonical proteins were categorized by the same rule as ncORFs, so the consistent reading is that 15,581 of 20,326 is canonical-proteome coverage *by immunopeptidomics*. If so, the 24.6% versus 76.7% contrast is a **same-assay** contrast, which makes it stronger: the same no-enzyme search over the same spectra reaches three-quarters of the canonical proteome and a quarter of the ncORFs. Confirm the build before quoting 76.7% as tryptic coverage.
+The canonical half of this panel is the comparison promoted above. The Methods do not name the build in so many words, but Fig. 3's title places the whole figure in the HLA build and the Methods categorize canonical proteins by the same rule as ncORFs — so 15,581 of 20,326 is canonical-proteome coverage *by immunopeptidomics*, measured on the same spectra under the same permissive assignment as the 1,867. That is what makes 25.7% versus 76.7% a same-assay contrast and the strongest number in the module. Never quote 76.7% as tryptic coverage.
 
 ### The C-terminal enrichment
 
@@ -211,7 +233,7 @@ Extended Data Fig. 6f makes the point unintentionally: it repeats the comparison
 
 You know this failure mode from your own bench: a pseudobulk contrast with tens of thousands of cells returns underflowing P values for log2 fold changes of 0.05, which is why you gate on effect size as well as adjusted P. Same statistics, same fix. This is one analogy from your work that does not break anywhere.
 
-Two bookkeeping notes before you quote this panel. Fig. 3d labels its groups `Detected (n = 1,796)` and `Undetected (n = 5,140)`, while the Extended Data Fig. 6f caption gives 1,796 and 5,142. The reconciling pair is 1,796 + 5,142 = 6,938 = 7,264 − 326, which also reconciles against Fig. 3a: 1,867 − 1,796 = 71, 5,397 − 5,142 = 255, and 71 + 255 = 326. So `5,140` looks like a slip in the panel. Separately, the running text gives P = 1.1 × 10⁻²³ where the Fig. 3d panel prints P = 1.076 × 10⁻²² — a one-order-of-magnitude disagreement. Nothing in the argument turns on it, but notice that you found it, and quote the text value with the discrepancy attached.
+Two bookkeeping notes before you quote this panel. Fig. 3d labels its groups `Detected (n = 1,796)` and `Undetected (n = 5,140)`, while the Extended Data Fig. 6f caption gives 1,796 and 5,142. The reconciling pair is 1,796 + 5,142 = 6,938 = 7,264 − 326, which also reconciles against Fig. 3a: 1,867 − 1,796 = 71, 5,397 − 5,142 = 255, and 71 + 255 = 326. So `5,140` looks like a slip in the panel — and the fact that Fig. 3d's groups are just Fig. 3a's groups minus the 326 ncORFs absent from GTEx is further confirmation that both panels share one permissive detected set, rather than 1,867 being a union of anything. Separately, the running text gives P = 1.1 × 10⁻²³ where the Fig. 3d panel prints P = 1.076 × 10⁻²² — a one-order-of-magnitude disagreement. Nothing in the argument turns on it, but notice that you found it, and quote the text value with the discrepancy attached.
 
 ### Tissue differences, and what does not explain them
 
@@ -297,7 +319,7 @@ HLA presentation speaks to each completely differently.
 
 **On synthesis, HLA evidence is strong.** Consider what a peptide must survive to be identified: a ribosome made the polypeptide; it entered the cytosolic degradation pool; the proteasome cut it to a compatible C terminus; TAP transported it; ERAP trimmed it; it bound an allele whose motif it happened to match; the complex reached the surface; enough copies accumulated for immunoaffinity capture; the spectrum passed a 0.0041% peptide-level FDR and, for the inspected subset, a human reviewer. Each step is a filter a spurious sequence has no way to pass. Layer per-sample allele concordance on top and the case that these molecules are made is about as good as a detection argument gets.
 
-**On stability, read very carefully.** Presentation is *weak* evidence against stability — and not evidence *of* instability either. Every protein is degraded eventually; presentation only requires that some copies were. What tilts the inference toward instability is not presence in the immunopeptidome but the **contrast**: absent from the tryptic proteome *and* present in the immunopeptidome is the pattern expected of a low-standing-pool, high-turnover product. That is the 1,684 HLA-only ncORFs.
+**On stability, read very carefully.** Presentation is *weak* evidence against stability — and not evidence *of* instability either. Every protein is degraded eventually; presentation only requires that some copies were. What tilts the inference toward instability is not presence in the immunopeptidome but the **contrast**: absent from the tryptic proteome *and* present in the immunopeptidome is the pattern expected of a low-standing-pool, high-turnover product. That is the pattern the Discussion points at when it notes that many ncORFs appear to generate immunopeptides but not tryptic peptides — a pattern it describes qualitatively, cites to prior work, and never counts.
 
 But the contrast is not clean, and the paper says so about its own flagship promotion: some HLA-detected ncORFs lack tryptic evidence *for either technological or biological reasons, such as the small size or amino acid composition of their encoded microproteins*. Technological, meaning the peptide was never identifiable — too few K/R sites, fragments too short, poor ionization. Biological, meaning the protein was not there to find. Both produce an identical HLA-only signature, and this paper does not separate them. Add that no direct stability measurement is offered and that Extended Data Fig. 10 shows pLDDT confounded by length and passed by shuffled sequences, and the correct statement is narrow: **HLA-only detection is consistent with instability and equally consistent with a detectability failure, and this paper cannot tell you which.**
 
@@ -340,8 +362,9 @@ One related trap, because it is the tempting shortcut: *"HLA-I purification is a
 Write this in your own words before moving on. Anchors, all positive claims:
 
 - **The 3,116 HLA peptides are real molecules.** The strongest reason is not the FDR — it is that they carry the binding motifs of the specific alleles the specific donors happened to have, at 94.8% concordance across 493 typings and every sample type. A search artefact has no mechanism for that. Add Ribo-seq validation in 613 of 691 inspected ncORFs and the identifications hold.
-- **Immunopeptidomics measures a different physical quantity from digest proteomics**, not the same quantity better: standing pool versus degradative flux. That single distinction explains the 24.6% versus 2.5% yields, the overlap of only about 101 ncORFs, the enrichment for unstable products, and why running both windows was the right design.
-- **The headline is carried by immunopeptidomics, and the paper says so.** 1,785 of 1,867 detected ncORFs — 95.6% — come from this assay. The response was to keep MS and HLA in separate columns, create Tier 1B for HLA-only support, promote `c2riboseqorf47` on HLA evidence explicitly, and pose the legitimacy of doing so as agenda question 2. That is a project reasoning in the open about the limits of its own evidence.
+- **Immunopeptidomics measures a different physical quantity from digest proteomics**, not the same quantity better: standing pool versus degradative flux. That single distinction explains the 24.6% versus 2.5% yields, the enrichment for unstable products, and why running both windows was the right design — and it predicts a small overlap between them, which this paper gives no number for.
+- **The headline is carried by immunopeptidomics, and the paper says so.** 24.6% from the HLA build against 2.5% from tryptic MS: no reading of the smaller number supports "about 25%". The response was to keep MS and HLA in separate columns, create Tier 1B for HLA-only support, promote `c2riboseqorf47` on HLA evidence explicitly, and pose the legitimacy of doing so as agenda question 2. That is a project reasoning in the open about the limits of its own evidence.
+- **The cleanest single number is a same-panel one.** In Fig. 3a — one build, one search, one assignment rule — immunopeptidomics reaches 15,581 of 20,326 canonical proteins (76.7%) and 1,867 of 7,264 ncORFs (25.7%). A three-fold deficit with no between-method confound to argue about. Prefer it to any figure you had to assemble yourself.
 - **Detection determinants are real but weak.** Length matters most and matters mechanically. pI matters, in opposite directions for ncORFs and canonical proteins. Expression matters at a ratio of 1.34 with P = 10⁻²³ — the module's cleanest lesson in reading effect size and P value as answers to different questions.
 - **Three claims are separable, and naming them separately is the durable skill.** The molecule is made; it is made in normal physiology; it does something. HLA data establishes the first powerfully, addresses the second only through sample provenance, and — as annotation policy stands — cannot touch the third. `peptidein` is the word for that configuration, useful precisely because it refuses to collapse the three.
 - **Where to stay uncertain, in good company:** whether HLA-only detection indicates genuine instability or merely tryptic invisibility (the paper cannot separate these); whether the C-terminal enrichment survives length-matching; and whether cancer-and-cell-line evidence should support a gene record. The consortium is uncertain about the last one too — that is why it is question 3.
@@ -350,7 +373,9 @@ Write this in your own words before moving on. Anchors, all positive claims:
 
 - [ ] Explain in two sentences why an unstable protein can be bright in the immunopeptidome and invisible in a tryptic digest, in terms of standing pool versus flux
 - [ ] Trace a peptide from cytosolic polypeptide to mass spectrum, naming the proteasome, TAP, ERAP and the peptide-loading complex, and say which terminus each step sets
-- [ ] Reproduce the decomposition of "about 25%" — 1,785 / 183 / 101 / 1,867 — and state what the abstract would have said without immunopeptidomics
+- [ ] State the 24.6% and 2.5% yields and what the abstract would have said without immunopeptidomics
+- [ ] Explain why 1,785 and 1,867 are the same build rather than a union, and say what the paper reports about the overlap between its two windows
+- [ ] Give the Fig. 3a same-panel contrast — 25.7% of ncORFs against 76.7% of canonical proteins — and say why having no between-method confound makes it the strongest number available
 - [ ] Say why no-enzyme mode costs about 5× rather than about 200× against the search this paper actually used for the other build, and name the second cost that database size alone does not capture
 - [ ] State the isoelectric-point result for ncORFs *and* for canonical proteins, with the directions right
 - [ ] Give the authors' explanation for the 20.3-fold C-terminal enrichment, the length-artefact alternative, and one reanalysis that would distinguish them
@@ -370,7 +395,9 @@ Write this in your own words before moving on. Anchors, all positive claims:
 | No-enzyme search: space, statistical power, spectrum character | | |
 | 3,116 peptides → 1,785 ncORFs (24.6%); HLA-I only 94.3% | | |
 | 61.3% of detected ncORFs rest on a single peptide | | |
-| The decomposition: 1,785 / 183 / 101 / 1,867 | | |
+| 24.6% HLA vs 2.5% tryptic — which assay carries the headline | | |
+| Why 1,867 is the HLA build, not a union; no overlap is reported | | |
+| Fig. 3a same-panel contrast: 25.7% ncORFs vs 76.7% canonical | | |
 | Why Fig. 5 separates the MS and HLA columns | | |
 | Fig. 3a: length, hydrophobicity, pI — and the pI direction flip | | |
 | C-terminal enrichment: 20.3× vs 7.2×, and the length confound | | |

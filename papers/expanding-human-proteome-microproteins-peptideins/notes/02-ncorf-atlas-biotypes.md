@@ -184,13 +184,17 @@ Three things to notice now, so Modules 4 and 5 have somewhere to attach.
 
 **The search mode is the whole difference.** The non-HLA build searches with protease-specific settings, because you know where trypsin cut. The HLA build searches in **no-enzyme mode**, because a proteasome does not cut at K or R — the paper notes that HLA peptides often lack the C-terminal lysine or arginine that gives tryptic spectra their strong y-ion series, so their spectra are dominated by b ions and internal fragments instead. A no-enzyme search over 240 million spectra is a vastly larger search space than an enzyme-constrained one, which is why the FDR discipline in Module 4 is not optional.
 
-**The windows barely overlap, and you can prove it from the figures.** Fig. 3a gives non-canonical ORFs as detected `n = 1,867` and undetected `n = 5,397` — which sum to 7,264, so 1,867 is the union of the two builds. Then:
+**The two windows find very different ncORFs — but the paper never says by how much.** Tryptic MS nominated 183 ncORFs (2.5%), of which manual spectrum and Ribo-seq review validated **66** (30 of 42 with two unique peptides, plus 36 of 141 with one). HLA immunopeptidomics found **1,785** (24.6%). Those two counts are what the tier system's separate MS and HLA columns rest on.
 
-```
-183 (non-HLA)  +  1,785 (HLA)  −  1,867 (union)  =  101 seen by both
-```
+What the paper does **not** publish is the cross-build union, or the overlap — how many of the 183 are among the 1,785. Neither appears in the main text, the figures or the Methods. Recovering either means joining the per-ncORF supplementary tables (Supplementary Tables 2, 3, 6 and 7), which are not in the article PDF.
 
-One hundred and one ncORFs of 1,867. Every later argument in this paper about why MS and HLA get separate columns in the tier table descends from that number. [Module 5](05-immunopeptidomics.md) is where it earns its keep.
+Resist one tempting shortcut, because I fell for it first. Fig. 3a prints non-canonical ORFs as detected `n = 1,867` and undetected `n = 5,397`, which sum to 7,264 — so it looks like a union, and `183 + 1,785 − 1,867 = 101` looks like it yields the overlap. It does not. Fig. 3 is titled "Determinants of ncORF peptide detection **in the HLA build**", and its Methods subsection ("Detectability determinants") accounts for the excess directly: "Contrary to most other analyses, peptides were not exclusively assigned to a single ncORF, due to which the number of detected ncORFs was larger than in Extended Data Fig. 4b." So 1,867 is an HLA-build count under a **relaxed peptide-assignment rule**, not a count with the tryptic build added. Summing to 7,264 is consistent with a union and does not establish one — two different quantities can both print as 1,867. Keep the general habit: a number that reconciles arithmetically has still only earned the meaning its own Methods give it.
+
+The one adjacent figure the paper does state is in agenda question 2 — of the HLA-detected ncORFs, **24** also have a single tryptic MS peptide, which the authors flag as "suitable for potential annotation". That is a count for one specific evidence combination, not the overlap.
+
+For the *expectation* that the overlap is small, the paper leans on prior work rather than its own measurement. Reference 19 is Cuevas *et al.*, "Most non-canonical proteins uniquely populate the proteome or immunopeptidome" (*Cell Rep.* **34**, 108815, 2021) — the title is the claim — and the Discussion states that many ncORFs appear to generate immunopeptides but not tryptic peptides, "as we and others have observed". Treat "the two windows barely overlap" as a well-supported expectation with a citation behind it, not as a number this paper reports.
+
+The cleanest quantitative contrast available is instead *inside* Fig. 3a, where ncORFs and canonical proteins are scored in the same panel, on the same build, under the same one-peptide criterion: roughly a quarter of ncORFs detected (1,867 of 7,264) against **15,581 of 20,326 canonical proteins (76.7%)**. One caveat to carry — the ncORF side lets a peptide count against multiple ncORFs, so if anything that quarter is generous. A threefold gap within a single panel is assay physics rather than biology, and it is the number to reach for when someone asks how hard microproteins are to see. [Module 5](05-immunopeptidomics.md) takes it from here.
 
 **The abstract's "95,520 proteomics experiments" is a third sense of the word.** In the Methods, "experiment" means a PeptideAtlas experiment — 1,172 plus 592, so 1,764 of them. The abstract's 95,520 matches the *MS run* totals instead: 9,776 HLA runs, leaving 85,744 for the non-HLA build, consistent with Fig. 1b's rounded 85,000. (That subtraction is mine; the non-HLA run count is not printed exactly.) The number is fine; the word is overloaded three ways in one paper. Say "MS runs" when you mean runs.
 
@@ -219,7 +223,7 @@ Write this in your own words before moving on. Some anchors:
 - **Overlapping a CDS is a confound with a known direction.** It inflates conservation (the host CDS is constrained regardless of the ncORF) and it destroys CRISPR specificity (a cut is a cut in both). The paper handles both with specific, checkable controls — per-frame null sets, gene-specific permutation nulls, CDS-versus-ncORF fitness plotted separately, CRISPRa checks for de-repression.
 - **`mixed` means undefined, not zero.** 448 ORFs have no single frame relationship to a CDS and therefore no matched null population, so ORBLq cannot be computed. Excluding them is the correct choice, and it is why 6,816 rather than 7,264 appears in the evolutionary figures.
 - **The same ORFs re-typed on a newer release do not land in the same biotypes** — 448 net out to `mixed`, and three biotypes gain members. Two effects are superimposed and the paper does not separate them, so I will not either.
-- **Numbers in this paper reconcile, and I checked.** Seven biotypes sum to 7,264; six re-derived biotypes sum to 6,816; Fig. 4c numerators sum to 2,211; Fig. 4g pairs sum to Fig. 4c denominators biotype by biotype. That is a well-kept ledger, and it is the reason I am willing to trust the numbers I did not check.
+- **Numbers in this paper reconcile, and I checked.** Seven biotypes sum to 7,264; six re-derived biotypes sum to 6,816; Fig. 4c numerators sum to 2,211; Fig. 4g pairs sum to Fig. 4c denominators biotype by biotype. That is a well-kept ledger, and it is why I am willing to trust the numbers I did not check. **But reconciling is not the same as meaning what I assumed** — Fig. 3a's 1,867 sums correctly to 7,264 and is still not a cross-build union. Arithmetic closure tells me a figure is internally consistent; only its Methods tell me what it counts.
 - **`gene_biotype "lncRNA"` is a statement about my reference, not about the molecule.** It means no CDS has been annotated here in this release. `OLMALINC` is the counterexample I will reach for whenever someone reads that field as a mechanistic claim.
 
 ## Self-check
@@ -230,7 +234,7 @@ Write this in your own words before moving on. Some anchors:
 - [ ] Name the five controls the paper uses to keep a CRISPR hit at an overlapping ncORF interpretable, and say which one you would trust least
 - [ ] State what `mixed` biotype means, why ORBLq is undefined for it, and reproduce `7,264 − 448 = 6,816`
 - [ ] Explain why the drop from 3,083 to 2,915 uORFs cannot be attributed to the mixed-biotype exclusion alone, using one number from the table
-- [ ] Derive the 101-ncORF overlap between the two builds from Fig. 3a and the two build totals
+- [ ] Explain why `183 + 1,785 − 1,867` does **not** give the cross-build overlap, quoting what Fig. 3's own Methods say the 1,867 actually counts
 - [ ] Write one sentence stating what `gene_biotype "lncRNA"` asserts, and one stating three things it does not
 
 ## Progress
