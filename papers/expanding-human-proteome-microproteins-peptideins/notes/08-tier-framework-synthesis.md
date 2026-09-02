@@ -173,11 +173,11 @@ Detection then falls by more than two orders of magnitude between "a peptide was
 
 ### Numbers that do not reconcile, and why that is fine
 
-Try to make the tier counts agree with the detection counts and you will fail. Add the final tiers that require some proteomic evidence — 16 + 601 + 39 + 1,059 + 90 + 2 — and you get **1,807**. The provisional equivalents give **1,911**. The detected union from Fig. 3a is **1,867**. Three numbers for what sounds like one quantity.
+Try to make the tier counts agree with the detection counts and you will fail. Add the final tiers that require some proteomic evidence — 16 + 601 + 39 + 1,059 + 90 + 2 — and you get **1,807**. The provisional equivalents give **1,911**. Fig. 3a's detected set is **1,867**, and the HLA build's own exclusive count is **1,785**. Four numbers for what sounds like one quantity.
 
 They differ for two reasons, and this is my reading rather than a statement in the paper. First, peptide-to-ORF assignment is *exclusive* in the tier bookkeeping but *non-exclusive* in the Fig. 3 detectability analysis, so a peptide mapping to several ncORFs is counted differently in the two places. Second, and larger: 1,867 counts detections as nominated, while final tiers are assigned after manual spectral review — so an ncORF whose only peptide failed inspection keeps no proteomic tier and lands in Tier 4. That mechanism also accounts for Tier 4 growing by 104.
 
-The lesson is not that the paper is sloppy. It is that "detected" is not one thing in a study this size — it means something different before and after curation, and something different again depending on how ambiguous peptides are assigned. When you quote a number from this paper, name the bookkeeping. A journal club that catches you conflating 1,785, 1,807, 1,867 and 1,911 will be right to.
+The lesson is not that the paper is sloppy. It is that "detected" is not one thing in a study this size — it means something different before and after curation, and something different again depending on how ambiguous peptides are assigned. When you quote a number from this paper, name the bookkeeping. A journal club that catches you conflating 1,785, 1,807, 1,867 and 1,911 will be right to — and note that none of the four is a union across the two builds, which the paper never reports.
 
 None of that makes the paper weak. It makes the paper's thesis legible: **3 of 7,264 is the finding**, not a disappointing result. The contribution is a defensible procedure for getting from billions of spectra to a handful of gene records you would be willing to defend, plus a new category — peptidein — for the enormous middle ground the old binary could not represent.
 
