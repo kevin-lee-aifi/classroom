@@ -20,7 +20,7 @@ By this point you have three evidence types that do not share a currency. Ribo-s
 
 None of these converts into the others, and none of them is "protein-coding gene". That is the problem Fig. 5 solves. The tier system is not a summary of the data — it is a **decision procedure** that makes incommensurable evidence comparable enough to act on, while keeping each axis visible rather than collapsing them into a single score.
 
-That design choice is the reason the table has separate MS and HLA columns instead of one "proteomics" column. Recall from [Module 5](05-immunopeptidomics.md) that those two windows barely overlap — 101 ncORFs of 1,867 detected. A framework that merged them would hide its own most important finding.
+That design choice is the reason the table has separate MS and HLA columns instead of one "proteomics" column. As [Module 5](05-immunopeptidomics.md) works through, the two windows find very different ncORFs — the HLA build reaches 1,785 while tryptic MS reaches 183, of which 66 survive inspection. A framework that merged them into one "proteomics" score would hide its own most important structural finding.
 
 ## The six tiers
 
@@ -142,25 +142,34 @@ Here is the synthesis the paper never states in one place. You should be able to
 
 | Evidence source | ncORFs | Share of 7,264 |
 |---------|-------|-------|
-| HLA immunopeptidomics | 1,785 | 24.6% |
+| **HLA immunopeptidomics — the paper's own stated figure** | **1,785** | **24.6%** |
+| HLA build, under Fig. 3a's permissive peptide assignment | 1,867 | 25.7% |
 | Tryptic (non-HLA) MS — detected | 183 | 2.5% |
 | Tryptic MS — *surviving manual inspection* | 66 | 0.9% |
-| Seen by both windows *(derived)* | 101 | 1.4% |
-| **Union — the abstract's "about 25%"** | **1,867** | **25.7%** |
 | Final Tier 1A | 16 | 0.22% |
 | Peptidein annotations | 121 | 1.7% |
 | **New protein-coding genes** | **3** | **0.04%** |
-| *Canonical proteins, for contrast* | *15,581 of 20,326* | *76.7%* |
+| *Canonical proteins, same HLA panel* | *15,581 of 20,326* | *76.7%* |
 
-The overlap of 101 is not printed anywhere in the paper — it is 183 + 1,785 − 1,867, using Fig. 3a's union. Present it as a derivation, not a citation.
+Before reading on, note carefully what is **not** in that table: a union across the two builds, and the overlap between them. It is tempting to compute both, and the temptation should be resisted.
 
-Two rows there deserve a second look. Tryptic MS detected 183 ncORFs, but only **66** survived manual inspection — the split is 30 of 42 ncORFs with multiple peptides versus just **36 of 141** with a single peptide (Fig. 2c–d). A 26% survival rate for single-peptide evidence is the paper's own empirical case for why HUPO-HPP demands two peptides.
+Here is why. Fig. 3a reports 1,867 detected ncORFs against 5,397 undetected, which sums neatly to 7,264 and looks like a cross-build union. It is not — or at least, the paper gives you no way to say that it is. Fig. 3 is titled "Determinants of ncORF peptide detection **in the HLA build**", and the Methods for that analysis state that "contrary to most other analyses, peptides were not exclusively assigned to a single ncORF, due to which the number of detected ncORFs was larger than in Extended Data Fig. 4b". So the excess of 1,867 over 1,785 is attributed to *ambiguous peptides being counted against more than one ncORF within the HLA build* — not to adding the tryptic build. Two quite different quantities could both print as 1,867.
+
+**The paper never reports the cross-build union, and never reports how many ncORFs both windows saw.** Recovering either would require the per-ncORF detection lists in the supplementary tables, which are not in the article PDF. The nearest thing the paper does state, in agenda question 2, is that the 1,785 include **24 ncORFs with one peptide in tryptic MS data** suitable for potential annotation. If someone asks you at journal club how much the two windows overlap, the correct answer is that this paper does not say, and that the prior literature — reference 19, whose title is that most non-canonical proteins uniquely populate either the proteome or the immunopeptidome — suggests the answer is "not much".
+
+That caution costs you nothing, because the structural point does not depend on it.
+
+Two rows deserve a second look. Tryptic MS detected 183 ncORFs, but only **66** survived manual inspection — the split is 30 of 42 ncORFs with multiple peptides versus just **36 of 141** with a single peptide (Fig. 2c–d). A 26% survival rate for single-peptide evidence is the paper's own empirical case for why HUPO-HPP demands two peptides.
 
 Be careful how you phrase what happened to the other 117, because the obvious phrasing is wrong. They were not all shown to be false. The manual verdict categories are `excellent`, `good`, `false positive`, `close but false positive` and `low information`, and only two of those five assert the identification is *incorrect* — `good` and `low information` assert that the evidence is insufficient **for annotation purposes**, which is a weaker and different claim. So the 64% rejection rate is a failure-to-meet-the-bar rate, and it is an *upper bound* on the ncORF-subset false discovery rate rather than an estimate of it. The actual subset FDR estimates live in Supplementary Tables 15 and 16, which are not in the article PDF. [Module 4](04-mass-spec-proteomics.md) works through this properly.
 
 When you quote a tryptic number, say which one you mean — and say whether you mean "not detected", "not annotation-grade", or "shown to be wrong".
 
-Read down that column and the paper's real shape appears. The headline "~25%" is carried almost entirely by immunopeptidomics — a proteasome-output assay — not by the conventional proteomics whose standard defines "Candidate protein". Detection falls by two orders of magnitude between "a peptide was seen" and "a gene was annotated". And 76.7% of canonical proteins are detected by the same pipelines that reach 25% here, which tells you how much of the gap is assay physics rather than biology.
+Read down that column and the paper's real shape appears. The abstract's "about 25%" is the HLA number: the paper itself writes 1,785 of 7,264 as 24.6%. Conventional tryptic proteomics — the method whose standard defines "Candidate protein" — reached 2.5% before curation and **0.9%** after it. So the headline rests on a proteasome-output assay, while the evidentiary bar is written for the assay that found under one percent.
+
+The cleanest single comparison in the paper is hiding in that last row, and it is an apples-to-apples one. Fig. 3a puts ncORFs and canonical proteins in the *same panel of the same HLA build*, scored the same way: canonical proteins are detected at 15,581 of 20,326, or 76.7%, against roughly a quarter for ncORFs. Same assay, same peptide-assignment rule, same spectra — a threefold gap. That comparison tells you how much of the shortfall is assay physics and ORF length rather than biology, and it is far more informative than comparing across builds.
+
+Detection then falls by more than two orders of magnitude between "a peptide was seen" and "a gene was annotated": 1,785 → 16 in the top tier → 3 gene records.
 
 ### Numbers that do not reconcile, and why that is fine
 

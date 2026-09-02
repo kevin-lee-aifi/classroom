@@ -26,7 +26,11 @@ Five minutes, no notes. If you cannot do this, go back to [Module 8](08-tier-fra
 
 **Q1. State the paper's headline number, then state the number you would actually defend.**
 
-Headline: about 25% of 7,264 ncORFs give rise to detectable peptides across 95,520 proteomics experiments. What I would defend depends on which claim is being made. For *any* peptide evidence: 1,867 of 7,264 (25.7%), the union across both builds. For HLA evidence: 1,785 (24.6%). For conventional tryptic evidence surviving manual inspection: **66 (0.9%)**. For "this is a protein-coding gene": **3**.
+Headline: about 25% of 7,264 ncORFs give rise to detectable peptides across 95,520 proteomics experiments. What I would defend depends on which claim is being made. For HLA immunopeptidomic evidence: **1,785 of 7,264 (24.6%)** — the paper's own figure, and what "about 25%" actually rests on. For conventional tryptic evidence: 183 detected (2.5%), of which **66 survive manual inspection (0.9%)**. For "this is a protein-coding gene": **3**.
+
+What I would *not* claim is a union across the two builds, or the overlap between them. Fig. 3a's `n = 1,867` looks like a union because it sums with 5,397 to 7,264, but Fig. 3 is scoped to the HLA build and its Methods attribute the excess over 1,785 to peptides not being exclusively assigned to one ncORF. The paper reports neither the union nor the overlap; the only related figure it gives is that 24 of the 1,785 also have a single tryptic peptide. Say "this paper doesn't report it" rather than doing the subtraction.
+
+Also worth knowing that "95,520 proteomics experiments" is loose — the paper's Methods define experiments as 1,172 plus 592, i.e. 1,764. 95,520 is MS *runs*.
 
 The follow-up to be ready for: those endpoints differ by roughly 600-fold, and that spread is the paper, not a flaw in it. Also worth knowing that "95,520 proteomics experiments" is loose — the paper's own Methods define experiments as 1,172 plus 592, i.e. 1,764; 95,520 is the number of MS *runs*.
 
