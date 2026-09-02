@@ -38,6 +38,7 @@ Quoted under the article's CC BY-NC-ND 4.0 licence; © The Author(s) 2026. Wordi
 - [Glossary](notes/glossary.md)
 - [Misconceptions to unlearn](notes/misconceptions.md)
 - [Journal club and capstone](notes/journal-club.md)
+- [Audit record](notes/redteam-findings.md) — what was verified against the PDF, and what was corrected
 - [Key references](resources/key-references.md)
 
 ## Questions to Answer

@@ -83,6 +83,7 @@ Read [misconceptions](misconceptions.md) at the end of Week 1 and again after Mo
 | [glossary.md](glossary.md) | Every term, defined as this paper uses it |
 | [misconceptions.md](misconceptions.md) | Traps, and the beliefs this paper should overturn |
 | [journal-club.md](journal-club.md) | Question bank with model answers, and the capstone |
+| [redteam-findings.md](redteam-findings.md) | Not a study file — the audit record. What was checked against the PDF, what was wrong and got fixed, and what was verified correct |
 
 ## Concepts to Master
 
@@ -121,6 +122,15 @@ Read [misconceptions](misconceptions.md) at the end of Week 1 and again after Mo
 - [ ] Capstone B — the referee report
 - [ ] Capstone C — teach it
 - [ ] Update the [paper README](../README.md) status to `read`
+
+## How much of this to trust
+
+Every number in these notes was extracted from the PDF and checked, and an adversarial pass then re-derived them independently. That process found real errors — including several in my own drafting — and they were fixed rather than papered over. [redteam-findings.md](redteam-findings.md) records both halves: what was wrong, and what was checked and found correct. If a claim here matters to you, that file tells you whether it was verified or inferred.
+
+Two habits the notes try to model, because they came out of that process:
+
+- A figure number that reconciles is not a figure number you have understood. Fig. 3a's detected count sums correctly to the catalogue total and still is not what it looks like — only its Methods say what it counts.
+- An extraction that finds nothing is a claim about the extraction, not about the paper. One correction in this set was a confident claim that a figure contained no arithmetic; it did.
 
 ## Follow-up Resources
 

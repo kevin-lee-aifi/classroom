@@ -78,7 +78,7 @@ A concrete demonstration that frame is a property of an ORF–transcript pair ra
 
 Given frame-resolved P-site coverage, an ORF caller asks: is coverage in the frame defined by this candidate start codon significantly enriched over the other two, along a contiguous stretch ending at an in-frame stop? Tools implement that question very differently — ORFquant and RiboTaper work directly off triplet periodicity, RibORF trains a support-vector classifier, PRICE runs an EM algorithm, Ribo-TISH applies a nonparametric rank-sum test on positional counts.
 
-They do not agree. A systematic comparison of five packages on the same high-resolution dataset found only ~2% of small ORFs called translated by all five, and ~15% by three or more — against ~74% five-way agreement for larger annotated genes ([*Brief. Bioinform.* 2024, PMID 38842510](https://pubmed.ncbi.nlm.nih.gov/38842510/)).
+They do not agree. A systematic comparison of five packages on the same high-resolution dataset found only ~2% of small ORFs called translated by all five, and ~15% by three or more — against ~74% five-way agreement for larger annotated genes ([*Brief. Bioinform.* 2024, PMID 38842510](https://pubmed.ncbi.nlm.nih.gov/38842510/)). **`retrieved abstract only`** — the full text was not reachable from where I wrote this, so these three percentages are second-hand. They carry real argumentative weight in the rest of this module, so check them against the paper before you repeat them.
 
 Hold that number against the catalogue's provenance. The 7,264 set is a union: Ribo-seq ORFs from **seven publications**, mapped onto GENCODE v35, filtered to remove ORFs under 16 amino acids and non-ATG initiations, with redundant sense-overlapping ORFs merged ([Mudge et al. 2022](https://www.nature.com/articles/s41587-022-01369-0)). Seven pipelines, seven sets of judgement calls, one merged reference. Nothing about "these 7,264 ncORFs are Ribo-seq supported" means they were called the same way.
 
@@ -119,7 +119,7 @@ Two separate accountings, with two separate denominators. Do not merge them.
 
 Both splits reconcile: 436 + 255 = 691, and 419 + 194 = 613. Coordinate-check the panel in your own PDF — the bar values are not printed inside it, so these come from the results text, and the axis labels above are what the panel actually carries.
 
-That 20-point gap between single-study and multi-study ncORFs is the ORF-caller discordance problem showing up as a validation rate. An ncORF found by one pipeline is roughly four times more likely to fail visual Ribo-seq inspection than one found by several.
+That 20-point gap between single-study and multi-study ncORFs is the ORF-caller discordance problem showing up as a validation rate — and it is larger than the gap in the pass rates makes it look. Do the arithmetic on the failures, not the passes: **17 of 436** multi-study ncORFs failed inspection (3.9%), against **61 of 255** single-study ncORFs (23.9%). So an ncORF reported by a single pipeline is about **six times** more likely to fail visual Ribo-seq inspection than one reported by several, not the ~1.3× that dividing 96.1% by 76.1% would suggest. (17 + 61 = 78, the `insufficient` total — the arithmetic closes.) Comparing rare-event rates by their complements is a good way to shrink an effect sixfold, and it is worth naming because the same trap sits in every QC pass-rate table you read.
 
 **The tier table — the whole catalogue.** Provisional Tier 3 is `0` and final Tier 3 is `90` (Fig. 5b). Work out why from the Methods definitions: Tier 3 is "any HLA immunopeptidomics and/or tryptic proteome LC–MS/MS evidence *without* Ribo-seq evidence." It is the only tier requiring Ribo-seq `-`. Every ncORF entered with Ribo-seq `+` by construction — that is what being in the catalogue meant — so provisional Tier 3 *had* to be zero, and the 90 final Tier 3 ncORFs are ncORFs that kept their proteomic evidence and lost their Ribo-seq support on manual inspection. (That reading is my inference from the tier definitions plus Fig. 5b, not a sentence in the paper; check it against Fig. 5a's row for Tier 3, which reads `– ± ±`.)
 
@@ -188,7 +188,7 @@ This is the centrepiece. Every row has a real breakage. Read the third column fi
 
 ### The row that matters most: 5′ versus 3′ geometry
 
-`uORF` is the single largest biotype in this catalogue: **3,083 of 7,264** (Fig. 1b, coordinate-verified; note that the ORBL section quotes 2,915 uORFs — [Module 6](06-evolution-orbl.md) flags that discrepancy as unresolved). uORFs sit in 5′UTRs, upstream of the annotated start codon.
+`uORF` is the single largest biotype in this catalogue: **3,083 of 7,264** (Fig. 1b, coordinate-verified). The ORBL section's figure of 2,915 uORFs is not a contradiction and not an exclusion: the biotypes were re-derived on GENCODE v42 while the catalogue itself was built on v35, and across that version change `intORF`, `doORF` and `lncRNA ORF` all *gain* members — which no exclusion criterion can do. The two counts are measuring the same ORFs against different annotation builds and are simply not comparable; use whichever build's figure matches the analysis you are reading. [Module 2](02-ncorf-atlas-biotypes.md) owns the version-drift treatment. uORFs sit in 5′UTRs, upstream of the annotated start codon.
 
 A 10x 3′ Gene Expression library reverse-transcribes from the poly-A tail and is sequenced from the 3′ end. Reads pile up within a few hundred nucleotides of the polyadenylation site. **A 5′UTR contributes no reads by construction.** This is not a sensitivity problem that more depth or more cells would fix. It is the library geometry. Your P3 answer should have been zero, or close to it — and if you wrote something higher, that is the most useful wrong prediction in this module.
 
@@ -210,7 +210,7 @@ Ten minutes, in prose, before you close the module.
 
 - [ ] Compare your P2 prediction with "three sequential clearly identified in-frame peaks within the first 100 nucleotides." Would you have signed off on that criterion for a reference annotation used by every human geneticist on earth? Argue one side.
 - [ ] Explain three-nucleotide periodicity in four sentences, to a colleague who does bulk RNA-seq, without using the word "frame" more than once.
-- [ ] Name one Ribo-seq quality-control judgement you would want to see for a Tier 4 ncORF that the aggregate-track approach structurally cannot give you. Then say whether a statistical ORF caller would actually have given it to you, given the ~2% five-way agreement figure.
+- [ ] Name one Ribo-seq quality-control judgement you would want to see for a Tier 4 ncORF that the aggregate-track approach structurally cannot give you. Then say whether a statistical ORF caller would actually have given it to you, given the ~2% five-way agreement figure (`retrieved abstract only`, per Part 2).
 - [ ] One sentence: why does the 20-point validation-rate gap between single-study and multi-study ncORFs (Fig. 2h) follow from how the 7,264 catalogue was built?
 
 ## Progress
