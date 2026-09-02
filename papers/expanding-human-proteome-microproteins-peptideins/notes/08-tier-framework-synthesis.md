@@ -118,6 +118,8 @@ That last number dominates. Two-thirds of the losses at the final stage were not
 
 The three that made it: `c12norep105` in CYP27B1, `c21norep46` in ERVH48-1, and `c11riboseqorf4` in PIDD1. A fourth, `c2riboseqorf47` (the GMCL1 uORF), was promoted via the route described in [Module 7](07-function-crispr-olmalinc.md) — on ORBL constraint, CRISPR evidence and HLA support, with no tryptic peptides at all.
 
+Be careful saying "three genes", because there is a second set of three. Separately from this funnel, GENCODE had *already* annotated three Tier 1B ncORFs as protein-coding on the basis of their evolutionary profiles: uoORF `c14riboseqorf117` in EIF5, uORF `c1riboseqorf55` in PTP4A2, and uORF `c3riboseqorf98` in CGGBP1. Those are prior annotations this work inherited, not products of it. When you quote the number, say which three you mean.
+
 Look hard at `c11riboseqorf4`. It is a **171-amino-acid** uoORF, and its peptides appear in non-malignant tissue, cancer samples *and* cell lines. It is the best-detected ncORF in the entire tryptic dataset, with 11 distinct peptides. It is also, at 171 aa, well above any conventional microprotein size cutoff — and that is *why* it was detectable. Size is a determinant of detection (Fig. 3). The catalogue's most convincing member is its least typical member. Any intuition you form about microproteins from this example will be wrong about the other 7,263.
 
 ## Putting the numbers together
@@ -181,7 +183,9 @@ Add one the authors do not list, which you are now equipped to see: constraint a
 
 The paper answers directly: it remains annotated as a peptidein because it does not possess clear evidence of function in normal physiology — its evidence remains restricted to transformed cell lines or cancer.
 
-That is the entire framework in one sentence. Not "the evidence is weak" — the evidence is the strongest in the paper for any single ncORF. The barrier is that *every* piece of it comes from cancer or immortalized cells, and annotation is a claim about the human organism, not about A375 cells. Agenda question 3 is not academic for this ORF; it is the only thing standing between it and a gene record.
+That is the entire framework in one sentence. Not "the evidence is weak" — the functional evidence is the strongest in the paper for any single ncORF.
+
+There is one more twist worth carrying, and it cuts against the obvious reading. Of the six pan-essential ncORFs with HLA support, four have high ORF-level constraint (ORBLq > 0.9) and two have low (ORBLq < 0.7) — and `c10riboseqorf92` is one of the two low ones. So the paper's showcase functional result sits on an ORF with *little* evolutionary constraint, while `c2riboseqorf47`, the one that became a gene, is high-constraint. The two axes disagree about which ORF matters. That is not an embarrassment for the framework; it is the clearest possible demonstration that the axes are independent measurements rather than proxies for one another — which is precisely why the tier table keeps them in separate columns and why the annotation decision is not a weighted sum. The barrier is that *every* piece of it comes from cancer or immortalized cells, and annotation is a claim about the human organism, not about A375 cells. Agenda question 3 is not academic for this ORF; it is the only thing standing between it and a gene record.
 
 Notice also the asymmetry in the cost of being wrong. Annotating a gene propagates into every downstream reference, panel and drug program — the "ripple effects" of [Module 1](01-annotation-problem.md) — and is far harder to undo than deferring. That asymmetry justifies caution independently of the biology, and it is worth being able to argue it in both directions.
 
