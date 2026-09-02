@@ -16,7 +16,7 @@ Write these down now, with numbers. The point is to be wrong first.
 
 - [ ] The non-HLA build reports a peptide-level false discovery rate of `0.0009%`. Of the 183 ncORFs that passed those automated thresholds, what fraction do you expect survived expert manual inspection of the spectra? Commit to a percentage.
 - [ ] Take the set of small human proteins that nobody doubts — curated, annotated, real. Of those under 50 amino acids, what fraction do you expect meets the HUPO-HPP two-peptide verification standard? Commit to a percentage.
-- [ ] Conventional tryptic proteomics found peptides for 2.5% of the 7,264 ncORFs, against 76.7% of canonical proteins. Is that gap mostly a **depth** problem (not enough spectra yet) or mostly a **chemistry** problem (the assay cannot see these molecules at any depth)? Commit to one, in one sentence, before reading on.
+- [ ] In the non-HLA build, 16,888 canonical proteins cleared PeptideAtlas's strict *two*-peptide `canonical` bar (Extended Data Fig. 1c), while only 183 of the 7,264 ncORFs cleared the far looser bar of a single peptide — about 2.5% (Fig. 2b). Same build, and the ncORFs were held to the *easier* standard. Is that gap mostly a **depth** problem (not enough spectra yet) or mostly a **chemistry** problem (the assay cannot see these molecules at any depth)? Commit to one, in one sentence, before reading on.
 
 Keep the sheet. You will grade it at the end.
 
@@ -173,7 +173,11 @@ These are **hard zeros produced by chemistry**. No amount of additional sequenci
 
 **The saturation curve (Extended Data Fig. 1a–d).** Read all four panels in your own copy. The non-HLA build has accumulated over 2.8 million distinct peptides across 573 million PSMs and 1,172 experiments; the cumulative canonical-protein count in that build is 16,888 (Extended Data Fig. 1c). But the legend's own summary is the sentence that matters: over the last 100 million PSMs, the build gains roughly **~2,000 new peptides per million PSMs and ~1 newly identified protein per million PSMs**. The main text calls this "near saturation in the power to identify canonical human proteins". Peptide discovery is still moving; protein discovery has flatlined.
 
-That is the answer to your third commitment. The depth experiment has already been run at the scale of the entire public record, and its marginal yield in *new proteins* is approximately one per million spectral matches. If microproteins were merely rare, this curve would still be climbing for them. Note that 16,888 sits on a different denominator from Fig. 3a's 15,581 of 20,326 detected canonical proteins; the two counts are not directly comparable and I did not reconcile them, so use Extended Data Fig. 1 for the *shape* of the curve, not as a headcount.
+That is the answer to your third commitment. The depth experiment has already been run at the scale of the entire public record, and its marginal yield in *new proteins* is approximately one per million spectral matches. If microproteins were merely rare, this curve would still be climbing for them.
+
+**One comparator to avoid, because it is the natural mistake.** You will be tempted to set the tryptic 2.5% against Fig. 3a's canonical detection rate of 15,581 of 20,326 — `76.7%`. Do not. Fig. 3's own title scopes that panel to the **HLA build**, and the Methods (*Detectability determinants*) categorise canonical proteins as detected or undetected "based on whether they were detected by a single peptide". So `76.7%` is a *single-peptide rate measured in the immunopeptidome* — a different build **and** a different criterion from the tryptic 2.5%. The attribution is checkable rather than a matter of opinion: Extended Data Fig. 1c gives 16,888 canonical proteins for the non-HLA build and Fig. 1d gives 13,799 for the HLA build, and 15,581 sits above 13,799 — exactly what a looser one-peptide bar should do inside the HLA build — and below the non-HLA build's own total. The right canonical comparator for *this* build is Extended Data Fig. 1c's **16,888**. Fig. 3a's contrast is a legitimate within-panel comparison, and it belongs to [Module 5](05-immunopeptidomics.md).
+
+So take Extended Data Fig. 1 for the *shape* of the curve, and 16,888 as the same-build headcount.
 
 **The length distribution (agenda question 1).** `28.3%` — 2,059 of 7,264 — of the ncORFs in this study are **under 25 amino acids**, and the paper states outright that many are smaller than 18 amino acids. Put that against the verification standard in idea 4 and the arithmetic closes: a 24-residue ORF asked to yield two non-overlapping ≥9-aa peptides covering ≥18 residues must have K/R positioned at almost exactly the two boundaries required. The probability of that is not small because the assay is insensitive. It is small because the sequence is short.
 
@@ -236,9 +240,9 @@ The Methods conclude that despite these imperfections the technique is "widely r
 | ncORFs with ≥1 such peptide | 183 of 7,264 (~2.5%) | Fig. 2b |
 | ncORFs with 2 unique peptides — validated / total | 30 of 42 | main text; Fig. 2c |
 | ncORFs with 1 peptide — validated / total | 36 of 141 | main text; Fig. 2c |
-| ncORFs passing inspection, total | 66 | Fig. 2d |
+| ncORFs passing inspection, total | 66 | **not printed in the paper** — the sum of Fig. 2d's bars, and independently 30 + 36 from the main text |
 
-Everything reconciles, which is worth verifying yourself rather than taking on trust. 42 + 141 = 183. 30 + 12 rejected = 42. 36 + 105 rejected = 141. And Fig. 2d, which bins the survivors by number of distinct peptides, gives 36 + 10 + 8 + 7 + 5 = 66 = 30 + 36. Read Fig. 2c and Fig. 2d together in your own copy and check the sum; the figure is coordinate-verified but you should not need to trust me.
+Everything reconciles, which is worth verifying yourself rather than taking on trust. 42 + 141 = 183. 30 + 12 rejected = 42. 36 + 105 rejected = 141. And Fig. 2d, which bins the survivors by number of distinct peptides, gives `1`→36, `2`→10, `3`→8, `4`→5, `>4`→7 — summing to 36 + 10 + 8 + 5 + 7 = 66 = 30 + 36. Read Fig. 2c and Fig. 2d together in your own copy and check the sum; the bar values are coordinate-verified but you should not need to trust me.
 
 So: **a build reporting a `0.0009%` peptide-level FDR, on manual inspection, rejected 117 of 183 ncORFs (63.9%) — including 105 of 141 (74.5%) of those supported by a single peptide.** Survivors: 66 of 7,264, which is `0.91%`. Compare your first commitment.
 
@@ -298,7 +302,7 @@ It is also contested on its own statistical terms, independent of microproteins.
 
 - An ORF must be **≥18 codons** even to be eligible. Below that, the achievable probability is exactly zero regardless of instrument, sample, depth or protease. The paper notes plainly that many ncORFs are smaller than 18 amino acids (agenda question 1).
 - Between 18 and ~25 codons, the rule demands that two non-overlapping ≥9-aa peptides cover ≥18 of at most 24 residues — i.e. ≥75% of the ORF, in two pieces. That requires K/R at very nearly the two exact positions needed. `28.3%` (2,059 of 7,264) of these ncORFs are in that regime or below (agenda question 1).
-- As length grows, the number of K/R positions grows and the chance of two usable, uniquely mapping fragments rises smoothly toward the near-certainty that canonical proteins enjoy: 15,581 of 20,326 canonical proteins detected, `76.7%` (Fig. 3a), against 183 of 7,264 ncORFs, `2.5%`.
+- As length grows, the number of K/R positions grows with it, and so does the chance that two of the resulting fragments are both ≥9 aa and both uniquely mapping. The tryptic build shows both ends of that curve without needing a cross-build rate: **16,888** canonical proteins cleared the two-peptide `canonical` bar in the non-HLA build (Extended Data Fig. 1c), while **183** ncORFs cleared the looser one-peptide bar and **66** survived inspection (Fig. 2b–d). Ordinary-length proteins meet this standard routinely, in their thousands; these ORFs almost never do.
 - The curve is calibrated by the only clean control available: **2 of 36 (5.6%)** curated small GENCODE proteins under 50 amino acids meet HUPO-HPP benchmarks. Real proteins. 94% failure.
 
 So the standard carries a power curve in ORF length, and the microprotein population sits almost entirely in its low-power tail. The standard is not wrong; it is **calibrated for a different molecule size** than the one it is now being asked to adjudicate.
@@ -422,7 +426,11 @@ State it in one breath, with the numbers:
 
 **Conventional tryptic proteomics found peptides for 183 of 7,264 ncORFs — about 2.5%. After manual inspection, 66 survived: 0.91%. The abstract's "about 25%" is not this method's result. It is the HLA immunopeptidomics number: 3,116 peptides mapping to 1,785 of 7,264 ncORFs, 24.6%.**
 
-Anchors: 484 peptides → 183 ncORFs (Fig. 2a,b; Supplementary Tables 2 and 3; main text, "Microproteins in digest MS/MS datasets"). 66 survivors (Fig. 2c,d, reconciled as 30 + 36 and as 36 + 10 + 8 + 7 + 5). 1,785 of 7,264 = 24.6% (Fig. 2e,f; main text, "Microproteins as HLA-I-presented peptides"). Canonical contrast 15,581 detected of 15,581 + 4,745 = 20,326 = 76.7% (Fig. 3a, coordinate-verified; the ncORF pair in the same panel is 1,867 + 5,397 = 7,264).
+Anchors: 484 peptides → 183 ncORFs (Fig. 2a,b; Supplementary Tables 2 and 3; main text, "Microproteins in digest MS/MS datasets"). 1,785 of 7,264 = 24.6% (Fig. 2e,f; main text, "Microproteins as HLA-I-presented peptides").
+
+The 66 needs its provenance stated, because it is load-bearing here and in Modules 5 and 8: **it is not printed anywhere in the paper.** It is the sum of Fig. 2d's coordinate-verified bars (36 + 10 + 8 + 5 + 7) and, independently, 30 + 36 from the main text's two manual-inspection sentences. Two routes, same number. Cite it that way, not as a figure value.
+
+For a canonical comparator on the tryptic build, use Extended Data Fig. 1c's **16,888** — **not** Fig. 3a's `76.7%`, which is a single-peptide rate inside the HLA build. See the caution in Part 3, idea 1.
 
 Three things follow, and Modules 5 and 8 will pick each of them up:
 
