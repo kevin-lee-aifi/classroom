@@ -26,11 +26,9 @@ Five minutes, no notes. If you cannot do this, go back to [Module 8](08-tier-fra
 
 **Q1. State the paper's headline number, then state the number you would actually defend.**
 
-Headline: about 25% of 7,264 ncORFs give rise to detectable peptides across 95,520 proteomics experiments. What I would defend depends on which claim is being made. For HLA immunopeptidomic evidence: **1,785 of 7,264 (24.6%)** — the paper's own figure, and what "about 25%" actually rests on. For conventional tryptic evidence: 183 detected (2.5%), of which **66 survive manual inspection (0.9%)**. For "this is a protein-coding gene": **3**.
+Headline: about 25% of 7,264 ncORFs give rise to detectable peptides across 95,520 proteomics experiments. What I would defend depends on which claim is being made. For HLA immunopeptidomic evidence: **1,785 of 7,264 (24.6%)** — the paper's own figure, and what "about 25%" actually rests on. For conventional tryptic evidence: 183 detected (2.5%), of which **66 survive manual inspection (0.9%)** — that 66 is 30 + 36 from the validation counts, and the 0.9% is your own arithmetic, so present both as derived. For "this is a protein-coding gene": **3**.
 
 What I would *not* claim is a union across the two builds, or the overlap between them. Fig. 3a's `n = 1,867` looks like a union because it sums with 5,397 to 7,264, but Fig. 3 is scoped to the HLA build and its Methods attribute the excess over 1,785 to peptides not being exclusively assigned to one ncORF. The paper reports neither the union nor the overlap; the only related figure it gives is that 24 of the 1,785 also have a single tryptic peptide. Say "this paper doesn't report it" rather than doing the subtraction.
-
-Also worth knowing that "95,520 proteomics experiments" is loose — the paper's Methods define experiments as 1,172 plus 592, i.e. 1,764. 95,520 is MS *runs*.
 
 The follow-up to be ready for: those endpoints differ by roughly 600-fold, and that spread is the paper, not a flaw in it. Also worth knowing that "95,520 proteomics experiments" is loose — the paper's own Methods define experiments as 1,172 plus 592, i.e. 1,764; 95,520 is the number of MS *runs*.
 
@@ -137,7 +135,9 @@ Two supporting points. First, the overlapping biotypes inherit constraint from t
 
 **Q14. Is the NetMHCpan concordance independent validation?**
 
-No — it is an internal consistency check, and a useful one, but NetMHCpan is trained in substantial part on eluted-ligand immunopeptidomics data, the same modality being checked. High concordance rules out gross artefact; it does not independently establish that these peptides are presented ligands. Marking this as `unverified`: I believe the specific training-data overlap is well established for NetMHCpan 4.x, but I have not confirmed it against the NetMHCpan publication itself, so present it as a concern to check rather than a settled fact.
+No — it is an internal consistency check, and a useful one, but NetMHCpan is trained in substantial part on eluted-ligand immunopeptidomics data, the same modality being checked. High concordance rules out gross artefact; it does not independently establish that these peptides are presented ligands.
+
+You can source that circularity from this paper without leaving it: its own reference 72 is titled "NetMHCpan-4.1 and NetMHCIIpan-4.0: improved predictions of MHC antigen presentation by concurrent motif deconvolution and **integration of MS MHC eluted ligand data**". The training-data overlap is in the title of the tool's own citation, so this is a verified concern rather than a borrowed one.
 
 **Q15. Which single panel in Fig. 6 would you delete last?**
 
@@ -170,7 +170,7 @@ Three deliverables. Reading and writing only.
 Pick one of these three. Each appears in the paper, and none has been used as a teaching example in any module — so you are seeing the evidence cold.
 
 1. **`c17norep146`**, a uoORF in PSMC5. Extended Data Fig. 8b.
-2. **`c3riboseqorf106`**. Appears in the tiling screen panels of Fig. 6 and again in Fig. 6h.
+2. **`c3riboseqorf106`**. Labelled in several Fig. 6 panels and in Extended Data Fig. 9i. Find them yourself — which panels it appears in is part of the dossier.
 3. **The trio of ncORFs in STK11, ZNF219 and CIRBP.** Discussed in the Discussion's limitations.
 
 Before looking anything up, write a dossier:
