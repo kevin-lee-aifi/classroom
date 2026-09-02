@@ -264,7 +264,7 @@ The unit of a CRISPR screen is a cut site. The unit of an annotation is a molecu
 
 Twenty minutes in your own PDF.
 
-- [ ] Fig. 6a: trace the five workflow steps left to right and, for each, say in one clause what it rules out. Then find the ORBLq > 0.9 and ORBLq < 0.7 branches and the ncORF names on each.
+- [ ] Fig. 6a: trace the five workflow steps left to right and, for each, say in one clause what it rules out. Then find the ORBLq > 0.9 and ORBLq < 0.7 branches and count how many ncORFs sit on each — count them, do not read the names, because one of those names is a capstone answer.
 - [ ] Fig. 6b: identify the frame colouring in the P-site track and confirm the ncORF is being read in a different frame from the host CDS. Then read the orange-versus-green fitness comparison at bottom right and say what it would look like if `GMCL1` itself were pan-essential.
 - [ ] Fig. 6c and 6d together: 6c is the workflow for the local-background permutation test and 6d is its output. State the null hypothesis of that test in one sentence, in your own words.
 - [ ] Fig. 6e: find the *x* and *y* axes and the green threshold. How many of the 25 datasets does an ncORF need for the ≥60% call?
