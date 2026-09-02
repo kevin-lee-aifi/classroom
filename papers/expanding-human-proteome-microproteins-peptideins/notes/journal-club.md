@@ -40,7 +40,9 @@ Because two things that had always travelled together came apart. Protein *ident
 
 **Q4. What is the paper's actual product?**
 
-Four things, none of which is a dataset: a decision procedure (the tier framework), a vocabulary (peptidein, now recognized by GENCODE, UniProtKB, HGNC, RefSeq and HUPO-HPP), a method (ORBL), and a governance agenda (seven questions). Read it as a standards document with a worked example attached. The 3-of-7,264 outcome is the thesis — it demonstrates that the procedure is stringent enough to be worth adopting.
+Four things, none of which is a dataset: a decision procedure (the tier framework, applied at catalogue scale), a vocabulary (peptidein, now recognized by GENCODE, UniProtKB, HGNC, RefSeq and HUPO-HPP), a method (ORBL), and a governance agenda (seven questions). Read it as a standards document with a worked example attached. The 3-of-7,264 outcome is the thesis — it demonstrates that the procedure is stringent enough to be worth adopting.
+
+Be precise about the tier framework if pressed, because this is a trap: the Methods say the tier system was "initially proposed previously" in reference 25, by one of this paper's own corresponding authors. What is new here is applying it to all 7,264, splitting provisional from final tier assignment, and wiring it to the protein-versus-peptidein decision. The genuinely novel *methods* contribution is ORBL; the genuinely novel *conceptual* contribution is the peptidein class.
 
 ### The methods
 

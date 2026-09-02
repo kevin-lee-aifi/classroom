@@ -35,11 +35,29 @@ The evidence signature, with the column order as printed in Fig. 5a. In the pape
 | 3 | − | ± | ± | Putative |
 | 4 | + | − | − | Ribo-seq ORF |
 
+The glyphs are compact but opaque, and the Methods give the operational version — which is far more useful, and which reveals that `++` and `+` are about **peptide count**, not abundance. Quoted from "Use of the tier classification system":
+
+- **Tier 1A** — two non-nested peptides in MS proteome data, with or without HLA immunopeptidomics data, with Ribo-seq data
+- **Tier 1B** — two non-nested peptides in HLA immunopeptidomics data, with Ribo-seq data
+- **Tier 2A** — one peptide in MS proteome data, with or without HLA immunopeptidomics data, with Ribo-seq data
+- **Tier 2B** — one peptide in HLA immunopeptidomics data, with Ribo-seq data
+- **Tier 3** — any HLA immunopeptidomics and/or tryptic proteome LC–MS/MS evidence *without* Ribo-seq evidence
+- **Tier 4** — Ribo-seq evidence without proteomic evidence
+- **Tier 5** — in silico prediction of an ORF on an expressed transcript, without any Ribo-seq or proteomic evidence
+
+So `++` = two non-nested peptides, `+` = one peptide, `±` = with or without, `−` = absent. Note that Fig. 5a's caption glosses `++` as "abundant detection", which is looser than the Methods' "two non-nested peptides" — prefer the Methods wording, because the two-peptide threshold is what connects the tiers to the HUPO-HPP rule.
+
+Note also **Tier 5**, which Fig. 5a does not show. Say "six tiers as figured, seven as defined" — a small thing, but the kind of detail that signals you read past the figure.
+
+And one piece of provenance worth having: the tier system was **not invented in this paper**. The Methods state it was "initially proposed previously" in reference 25 — Prensner *et al.*, *Mol. Cell. Proteom.* 2023, "What can ribo-seq, immunopeptidomics, and proteomics tell us about the non-canonical proteome?", by one of this paper's corresponding authors. What is new here is applying it at catalogue scale, adding the provisional-versus-final distinction, and coupling it to the protein/peptidein annotation decision. If someone asks "what's actually new?", the tier concept is not the right answer.
+
 Read the table as a set of claims of decreasing strength, and notice three things.
 
-**Tier 3 is the odd one out.** It is the only row requiring Ribo-seq `−`. Every one of the 7,264 ncORFs is in the catalogue *because* it has Ribo-seq support, so nothing can start in Tier 3. It can only be reached by demotion, when manual inspection decides the Ribo-seq evidence does not hold up. Tier 3 is where ORFs go when the ground floor gives way. That is why its provisional count is zero.
+**Tier 3 is the odd one out.** It is the only row requiring Ribo-seq `−` — its definition is *any* proteomic evidence **without** Ribo-seq support. Every one of the 7,264 ncORFs is in the catalogue *because* it has Ribo-seq support, so nothing can start in Tier 3. It can only be reached by demotion, when manual inspection decides the Ribo-seq evidence does not hold up. Tier 3 is where ORFs go when the ground floor gives way. That is why its provisional count is zero.
 
 **Tiers 2A and 2B share a name but not a basis.** Both are "Detected". 2A means tryptic MS saw it; 2B means only HLA saw it. The paper deliberately declines to rank these against each other, which is agenda question 2 in table form.
+
+**One axis is much less verified than the other two.** Every tier except 3 requires Ribo-seq `+`, which makes Ribo-seq the load-bearing column — and it is the column that received the least independent scrutiny in this work. Manual Ribo-seq inspection covered 183 ncORFs from the non-HLA build and 699 from the HLA build. The remaining roughly 6,400 carry their Ribo-seq `+` inherited from the source catalogue without re-inspection here. The paper is not hiding this — it reports exactly what it inspected — but if you are asked which axis of the table you trust least, this is the answer, and it is not the answer most readers would guess.
 
 **Tier 1B has no MS evidence at all.** "Presented" is a real category with abundant HLA support and no tryptic peptides. Under the pre-existing standard this ORF would have had nothing. This tier exists because the consortium decided HLA data says *something* — while stopping short of saying it says "protein".
 
@@ -121,6 +139,14 @@ Here is the synthesis the paper never states in one place. You should be able to
 Two rows there deserve a second look. Tryptic MS detected 183 ncORFs, but only **66** survived manual inspection — the split is 30 of 42 ncORFs with multiple peptides versus just **36 of 141** with a single peptide (Fig. 2c–d). A 26% survival rate for single-peptide evidence is the paper's own empirical case for why HUPO-HPP demands two peptides, and it means the headline 183 was roughly two-thirds false. When you quote a tryptic number, say which one you mean.
 
 Read down that column and the paper's real shape appears. The headline "~25%" is carried almost entirely by immunopeptidomics — a proteasome-output assay — not by the conventional proteomics whose standard defines "Candidate protein". Detection falls by two orders of magnitude between "a peptide was seen" and "a gene was annotated". And 76.7% of canonical proteins are detected by the same pipelines that reach 25% here, which tells you how much of the gap is assay physics rather than biology.
+
+### Numbers that do not reconcile, and why that is fine
+
+Try to make the tier counts agree with the detection counts and you will fail. Add the final tiers that require some proteomic evidence — 16 + 601 + 39 + 1,059 + 90 + 2 — and you get **1,807**. The provisional equivalents give **1,911**. The detected union from Fig. 3a is **1,867**. Three numbers for what sounds like one quantity.
+
+They differ for two reasons, and this is my reading rather than a statement in the paper. First, peptide-to-ORF assignment is *exclusive* in the tier bookkeeping but *non-exclusive* in the Fig. 3 detectability analysis, so a peptide mapping to several ncORFs is counted differently in the two places. Second, and larger: 1,867 counts detections as nominated, while final tiers are assigned after manual spectral review — so an ncORF whose only peptide failed inspection keeps no proteomic tier and lands in Tier 4. That mechanism also accounts for Tier 4 growing by 104.
+
+The lesson is not that the paper is sloppy. It is that "detected" is not one thing in a study this size — it means something different before and after curation, and something different again depending on how ambiguous peptides are assigned. When you quote a number from this paper, name the bookkeeping. A journal club that catches you conflating 1,785, 1,807, 1,867 and 1,911 will be right to.
 
 None of that makes the paper weak. It makes the paper's thesis legible: **3 of 7,264 is the finding**, not a disappointing result. The contribution is a defensible procedure for getting from billions of spectra to a handful of gene records you would be willing to defend, plus a new category — peptidein — for the enormous middle ground the old binary could not represent.
 
