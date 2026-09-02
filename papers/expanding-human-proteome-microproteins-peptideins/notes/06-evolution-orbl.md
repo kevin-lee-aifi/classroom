@@ -99,15 +99,15 @@ ORBLq is the constraint score: **the quantile of an ncORF's ORBLv among the ORBL
 
 Finally, `uoORF`s, `intORF`s and `doORF`s are segregated by the frame in which they overlap the main ORF, `+1` or `+2`, because — as the Methods put it — constraint on the main frame's amino acid sequence imposes different ORFness constraint on the two overlapping frames. That is a genuinely subtle piece of modelling: the wobble position of the host CDS falls in a different place relative to your ORF depending on the offset, so the two offsets have different background probabilities of retaining an open frame.
 
-**The background set.** 1,717,927 untranslated ORFs, distributed as `uORF` 63,795 · `uoORF+1` 3,231 · `uoORF+2` 2,940 · `intORF+1` 320,823 · `intORF+2` 60,135 · `doORF+1` 16,910 · `doORF+2` 5,946 · `dORF` 653,983 · `lncRNA-ORF` 590,164. ORBLv was computed for every one of them.
+**The background set.** 1,717,927 untranslated ORFs, distributed as `uORF` 63,795 · `uoORF+1` 3,231 · `uoORF+2` 2,940 · `intORF+1` 320,823 · `intORF+2` 60,135 · `doORF+1` 16,910 · `doORF+2` 5,946 · `dORF` 653,983 · `lncRNA-ORF` 590,164. Those nine sum to exactly 1,717,927, so the partition is complete and nothing was silently dropped between the total and the breakdown. ORBLv was computed for every one of them.
 
 **Matching.** For a given ncORF, take at least 1,000 untranslated ORFs of the same biotype (and the same overlap frame, where applicable), starting with those of exactly the same length. If fewer than 1,000 exist at that exact length — the Methods note this was common for longer ncORFs and for rarer biotypes such as `uoORF` — widen to length ±1, then ±2, and so on until the matched set reaches 1,000. Fig. 4a's panel label reads "≥1,000 untranslated ORFs matched by biotype and length"; the Methods say "at least 1,000", and they agree.
 
-**The score.** With ORBLv\* the value for your ncORF,
+**The score.** Let ORBLv\* be the value for your ncORF, and count how many members of the matched set reach it. Then
 
-`P = (number of matched ORFs having ORBLv ≥ ORBLv* + 1) / (number of matched ORFs)`
+`P = ( [count of matched ORFs with ORBLv ≥ ORBLv*] + 1 ) / [size of matched set]`
 
-with a pseudocount of 1 in the numerator to prevent `P = 0`, not added if the result would exceed 1. Then `ORBLq = 1 − P`. For some analyses the paper uses the information-content transform `−log10[1 − ORBLq]`, which is the *y* axis of Fig. 4g and appears again in Extended Data Fig. 9g.
+where the `+ 1` is a pseudocount that prevents `P = 0`, and is not added if the result would exceed 1. Then `ORBLq = 1 − P`. For some analyses the paper uses the information-content transform `−log10[1 − ORBLq]`, which is the *y* axis of Fig. 4g and appears again in Extended Data Fig. 9g.
 
 ### Two properties of a quantile against a finite null
 
@@ -179,7 +179,7 @@ And the clade choice is not academic. Of the 15 Tier 1A candidates prioritised f
 
 `uoORF`, `intORF` and `doORF` score higher, and the paper attributes this to constraint on the host CDS rather than on the ncORF — "presumably due to constraint to preserve the CDS" (results, "Evolutionary insights"). Two things follow.
 
-First, this is a statement about **ORBLv**, and ORBLq is the intended remedy: matching on biotype *and* on `+1`/`+2` overlap frame is exactly an attempt to price in the host CDS. Note that Fig. 4c still shows `uoORF` at 39.1% and `intORF` at 31.1% — both far above 10% — so either the matching leaves residual CDS bleed-through, or these biotypes really are constrained as ORFs, and ORBLq alone cannot tell you which.
+First, this is a statement about **ORBLv**, and ORBLq is the intended remedy: matching on biotype *and* on `+1`/`+2` overlap frame is exactly an attempt to price in the host CDS. But work out the CDS-overlapping biotypes from the ratios printed in Fig. 4c — `uoORF` 243/622 is 39.1% and `intORF` 231/743 is 31.1%, both far above the 10% null. So either the matching leaves residual CDS bleed-through, or these biotypes really are constrained as ORFs, and ORBLq alone cannot tell you which.
 
 Second, note the word "presumably". The authors are declaring an unresolved confound in their own headline result rather than burying it. Read that as a signal about how to read the rest: the section is written by people who expect to be checked.
 
