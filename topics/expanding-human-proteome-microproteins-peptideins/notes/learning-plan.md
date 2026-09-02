@@ -83,6 +83,7 @@ Read [misconceptions](misconceptions.md) at the end of Week 1 and again after Mo
 | [glossary.md](glossary.md) | Every term, defined as this paper uses it |
 | [misconceptions.md](misconceptions.md) | Traps, and the beliefs this paper should overturn |
 | [journal-club.md](journal-club.md) | Question bank with model answers, and the capstone |
+| [../progress.md](../progress.md) | The learner record — what stuck and what didn't. Written by `/teach` |
 | [redteam-findings.md](redteam-findings.md) | Not a study file — the audit record. What was checked against the PDF, what was wrong and got fixed, and what was verified correct |
 
 ## Concepts to Master

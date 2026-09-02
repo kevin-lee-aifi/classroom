@@ -34,7 +34,8 @@ Quoted under the article's CC BY-NC-ND 4.0 licence; © The Author(s) 2026. Wordi
 
 ## Notes
 
-- [Learning plan](notes/learning-plan.md) — the 2-week syllabus and progress tracker
+- [Learning plan](notes/learning-plan.md) — the 2-week syllabus
+- [Progress](progress.md) — the learner record: what stuck, what didn't
 - [Glossary](notes/glossary.md)
 - [Misconceptions to unlearn](notes/misconceptions.md)
 - [Journal club and capstone](notes/journal-club.md)
