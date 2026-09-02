@@ -138,7 +138,11 @@ Here is the synthesis the paper never states in one place. You should be able to
 | **New protein-coding genes** | **3** | **0.04%** |
 | *Canonical proteins, for contrast* | *15,581 of 20,326* | *76.7%* |
 
-Two rows there deserve a second look. Tryptic MS detected 183 ncORFs, but only **66** survived manual inspection — the split is 30 of 42 ncORFs with multiple peptides versus just **36 of 141** with a single peptide (Fig. 2c–d). A 26% survival rate for single-peptide evidence is the paper's own empirical case for why HUPO-HPP demands two peptides, and it means the headline 183 was roughly two-thirds false. When you quote a tryptic number, say which one you mean.
+Two rows there deserve a second look. Tryptic MS detected 183 ncORFs, but only **66** survived manual inspection — the split is 30 of 42 ncORFs with multiple peptides versus just **36 of 141** with a single peptide (Fig. 2c–d). A 26% survival rate for single-peptide evidence is the paper's own empirical case for why HUPO-HPP demands two peptides.
+
+Be careful how you phrase what happened to the other 117, because the obvious phrasing is wrong. They were not all shown to be false. The manual verdict categories are `excellent`, `good`, `false positive`, `close but false positive` and `low information`, and only two of those five assert the identification is *incorrect* — `good` and `low information` assert that the evidence is insufficient **for annotation purposes**, which is a weaker and different claim. So the 64% rejection rate is a failure-to-meet-the-bar rate, and it is an *upper bound* on the ncORF-subset false discovery rate rather than an estimate of it. The actual subset FDR estimates live in Supplementary Tables 15 and 16, which are not in the article PDF. [Module 4](04-mass-spec-proteomics.md) works through this properly.
+
+When you quote a tryptic number, say which one you mean — and say whether you mean "not detected", "not annotation-grade", or "shown to be wrong".
 
 Read down that column and the paper's real shape appears. The headline "~25%" is carried almost entirely by immunopeptidomics — a proteasome-output assay — not by the conventional proteomics whose standard defines "Candidate protein". Detection falls by two orders of magnitude between "a peptide was seen" and "a gene was annotated". And 76.7% of canonical proteins are detected by the same pipelines that reach 25% here, which tells you how much of the gap is assay physics rather than biology.
 
